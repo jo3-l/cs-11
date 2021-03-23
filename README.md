@@ -4,7 +4,7 @@ Repository for my online Computer Science 11 course.
 
 # Progress
 
-- [ ] [Expressions](./expressions)
+- [x] [Expressions](./expressions)
 - [ ] [Drawing with Text](./drawing-with-text)
 - [ ] [Rock Paper Scissors](./rock-paper-scissors)
 - [ ] [Rock Paper Scissors, Game Loop Edition](./rock-paper-scissors-v2)
