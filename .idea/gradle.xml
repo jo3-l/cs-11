@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
@@ -8,6 +9,21 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/arrays" />
+            <option value="$PROJECT_DIR$/data-abstraction" />
+            <option value="$PROJECT_DIR$/drawing-with-text" />
+            <option value="$PROJECT_DIR$/expressions" />
+            <option value="$PROJECT_DIR$/friends-book" />
+            <option value="$PROJECT_DIR$/game-of-chance" />
+            <option value="$PROJECT_DIR$/integer-set" />
+            <option value="$PROJECT_DIR$/persistent-friends-book" />
+            <option value="$PROJECT_DIR$/project-one" />
+            <option value="$PROJECT_DIR$/project-two" />
+            <option value="$PROJECT_DIR$/reading-text" />
+            <option value="$PROJECT_DIR$/rock-paper-scissors" />
+            <option value="$PROJECT_DIR$/rock-paper-scissors-v2" />
+            <option value="$PROJECT_DIR$/school" />
+            <option value="$PROJECT_DIR$/string-encryption" />
           </set>
         </option>
       </GradleProjectSettings>
