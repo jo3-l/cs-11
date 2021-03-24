@@ -20,18 +20,15 @@ public class Main {
         String drawMessage = "Draw!";
         String loseMessage = "You Lose!";
 
-        // Message sent when the user first starts the program.
+        // Various other messages displayed to the user.
         String promptMessage = "Choose rock paper or scissors. 'r' for rock, 'p' for paper and 's' for scissors.";
-        // Message sent if the user's input was invalid.
         String invalidInputMessage = "Invalid selection please play again.";
-
-        // The format string for information about the computer & player choice, to be passed to the `printf` function.
-        String choiceInfoFormatString = "Computer Choice: %s  Player choice: %s\n";
+        String choiceInfoFormatStr = "Computer Choice: %s  Player choice: %s\n";
 
         Scanner scanner = new Scanner(System.in);
 
-        // Prompt the user.
         System.out.println(promptMessage);
+
         // Retrieve the next line the user types.
         String input = scanner.nextLine();
 
@@ -62,7 +59,6 @@ public class Main {
         // Otherwise, it's a loss.
         else System.out.println(loseMessage);
 
-        // Finally, print out some information about the computer & user choice.
-        System.out.printf(choiceInfoFormatString, computerChoice, userChoice);
+        System.out.printf(choiceInfoFormatStr, computerChoice, userChoice);
     }
 }
