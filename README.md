@@ -10,8 +10,10 @@ Repository for my online Computer Science 11 course.
 - [x] [Rock Paper Scissors, Game Loop Edition](./rock-paper-scissors-v2)
 - [x] [String Encryption](./string-encryption)
 - [x] [Arrays](./arrays)
-- [ ] [Project One](./project-one)
+- [ ] [Project One](./project-one) 
+    - TODO: Document code
 - [ ] [School](./school)
+    - TODO: Document code
 - [ ] [Integer Set](./integer-set)
 - [ ] [Data Abstraction](./data-abstraction)
 - [ ] [Game of Chance](./game-of-chance)
