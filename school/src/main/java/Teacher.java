@@ -34,6 +34,6 @@ public class Teacher {
     }
 
     public void print() {
-        System.out.println("Name: " + this.firstName + " " + this.lastName + " | Subject: " + subject);
+        System.out.println("Name: " + this.firstName + " " + this.lastName + " Subject: " + subject);
     }
 }
