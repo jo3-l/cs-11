@@ -6,7 +6,7 @@ Repository for my online Computer Science 11 course.
 
 - [x] [Expressions](./expressions)
 - [x] [Drawing with Text](./drawing-with-text)
-- [ ] [Rock Paper Scissors](./rock-paper-scissors)
+- [x] [Rock Paper Scissors](./rock-paper-scissors)
 - [ ] [Rock Paper Scissors, Game Loop Edition](./rock-paper-scissors-v2)
 - [ ] [String Encryption](./string-encryption)
 - [ ] [Arrays](./arrays)
