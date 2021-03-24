@@ -10,7 +10,7 @@ public class MainTests {
     @ParameterizedTest
     @MethodSource("provideStringsForTestProblemOne")
     public void testProblemOne(String input, int expected) {
-        assertEquals(Main.problemOne(input), expected);
+        assertEquals(expected, Main.problemOne(input));
     }
 
     private static Stream<Arguments> provideStringsForTestProblemOne() {
@@ -41,7 +41,7 @@ public class MainTests {
     @ParameterizedTest
     @MethodSource("provideStringsForTestProblemTwo")
     public void testProblemTwo(String input, int expected) {
-        assertEquals(Main.problemTwo(input), expected);
+        assertEquals(expected, Main.problemTwo(input));
     }
 
     private static Stream<Arguments> provideStringsForTestProblemTwo() {
@@ -72,7 +72,7 @@ public class MainTests {
     @ParameterizedTest
     @MethodSource("provideStringsForTestProblemThree")
     public void testProblemThree(String input, String expected) {
-        assertEquals(Main.problemThree(input), expected);
+        assertEquals(expected, Main.problemThree(input));
     }
 
     private static Stream<Arguments> provideStringsForTestProblemThree() {

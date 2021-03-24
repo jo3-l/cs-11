@@ -16,14 +16,14 @@ public class IntegerSetTests {
     @Test
     public void testInsertNotThere() {
         // Check that the number is not already in the set.
-        assertEquals(testSet.size(), 0);
+        assertEquals(0, testSet.size());
         assertFalse(testSet.contains(3));
 
         // Insert a number.
         testSet.insert(3);
 
         // Check that the number is in the set.
-        assertEquals(testSet.size(), 1);
+        assertEquals(1, testSet.size());
         assertTrue(testSet.contains(3));
     }
 
@@ -32,13 +32,13 @@ public class IntegerSetTests {
         // Insert a number.
         testSet.insert(3);
         // Assert that our number was inserted correctly.
-        assertEquals(testSet.size(), 1);
+        assertEquals(1, testSet.size());
         assertTrue(testSet.contains(3));
 
         // Insert the same number again.
         testSet.insert(3);
         // Assert that the size of the set has not increased, as it already contains the number we wish to insert.
-        assertEquals(testSet.size(), 1);
+        assertEquals(1, testSet.size());
         // Assert that the set still contains the given number.
         assertTrue(testSet.contains(3));
     }
