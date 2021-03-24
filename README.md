@@ -14,7 +14,7 @@ Repository for my online Computer Science 11 course.
     - TODO: Document code
 - [ ] [School](./school)
     - TODO: Document code
-- [ ] [Integer Set](./integer-set)
+- [x] [Integer Set](./integer-set)
 - [ ] [Data Abstraction](./data-abstraction)
 - [ ] [Game of Chance](./game-of-chance)
 - [ ] [Friends Book](./friends-book)
