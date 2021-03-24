@@ -20,55 +20,55 @@ public class Main {
         String drawMessage = "Draw!";
         String loseMessage = "You Lose!";
 
-        // The format string for information about the computer & player choice, to be passed to the `printf` function.
+        // Various other messages displayed to the user.
         String choiceInfoFormatStr = "Computer Choice: %s  Player choice: %s\n";
-        // The format string for information displayed at the start of the round.
         String roundStartFormatStr = "Wins: %d Losses: %d\nPlayers Choice:\n";
 
-        // Message sent when the user first starts the program.
-        String initialMessage = "Choose rock paper or scissors. 'r' for rock, 'p' for paper and 's' for scissors. To exit choose 'x'";
-        // Message sent if the user's input was invalid.
+        String gameStartMessage = "Choose rock paper or scissors. 'r' for rock, 'p' for paper and 's' for scissors. To exit choose 'x'";
         String invalidInputMessage = "Invalid selection please play again.";
-        // Message sent when the game ends.
         String gameEndMessage = "Thank you for playing!";
-        // A banner of asterisks used to separate different messages we display.
-        String banner = "*".repeat(50);
+
+        // A banner of asterisks used to separate different messages.
+        String separator = "*".repeat(50);
 
         Scanner scanner = new Scanner(System.in);
 
-        // Counters for wins/losses from the perspective of the user.
         int userWins = 0;
         int userLosses = 0;
 
-        // Send the initial message.
-        System.out.println(initialMessage);
-        System.out.println(banner);
+        // Send the game start message.
+        System.out.println(gameStartMessage);
+        System.out.println(separator);
 
         while (true) {
-            // Display the round start message.
             System.out.printf(roundStartFormatStr, userWins, userLosses);
+
             // Retrieve the next line the user types.
             String input = scanner.nextLine();
 
             // Map the user's input (short names of the choices, i.e. 'r'), to the long name of the choice (i.e. 'rock').
             String userChoice;
-            if (input.equals("r")) userChoice = rock;
-            else if (input.equals("p")) userChoice = paper;
-            else if (input.equals("s")) userChoice = scissors;
-            else if (input.equals("x")) {
+            if (input.equals("r")) {
+                userChoice = rock;
+            } else if (input.equals("p")) {
+                userChoice = paper;
+            } else if (input.equals("s")) {
+                userChoice = scissors;
+            } else if (input.equals("x")) {
                 System.out.println(gameEndMessage);
                 // Stop code execution at this point so no code beyond this point is executed.
                 return;
             } else {
-                // If we've gotten to this else branch, then the input the user sent was invalid. Tell them to try again.
+                // If we've gotten to this branch, then the input the user sent was invalid. Tell them to try again.
                 System.out.println(invalidInputMessage);
-                System.out.println(banner);
+                System.out.println(separator);
                 // Continue to the next iteration of the game loop.
                 continue;
             }
 
             // Generate a random integer from 0-2, inclusive.
             int computerChoiceInt = (int) (Math.random() * 3);
+
             // Map the integer to the long name of the choice it represents.
             String computerChoice;
             if (computerChoiceInt == 0) computerChoice = rock;
@@ -78,7 +78,6 @@ public class Main {
             if (winningChoices.get(userChoice).equals(computerChoice)) {
                 // Check whether the user's choice wins, using the `winningChoices` Map we constructed earlier.
                 System.out.println(winMessage);
-                // Add one to the user win counter.
                 ++userWins;
             } else if (userChoice.equals(computerChoice)) {
                 // If they're the same, then it's a draw.
@@ -86,13 +85,11 @@ public class Main {
             } else {
                 // Otherwise, it's a loss.
                 System.out.println(loseMessage);
-                // Add one to the user losses counter.
                 ++userLosses;
             }
 
-            // Print out some information about the computer & user choice.
             System.out.printf(choiceInfoFormatStr, computerChoice, userChoice);
-            System.out.println(banner);
+            System.out.println(separator);
         }
     }
 }
