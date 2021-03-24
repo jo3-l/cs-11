@@ -5,6 +5,8 @@ import java.util.List;
 public class School {
     private final List<Teacher> teachers = new ArrayList<>();
     private final List<Student> students = new ArrayList<>();
+    // Note: Mentioned in instructions but never used.
+    private final List<String> courses = new ArrayList<>();
 
     private String name;
     private Year foundingYear;
