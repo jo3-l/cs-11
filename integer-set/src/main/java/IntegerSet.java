@@ -6,9 +6,16 @@ public class IntegerSet {
 
     // Requires: int
     // Modifies: this
-    // Effects: Inserts integer into set unelss it's also there, in which case do nothing.
+    // Effects: Inserts integer into set unless it's also there, in which case do nothing.
     public void insert(Integer num) {
         if (!nums.contains(num)) nums.add(num);
+    }
+
+    // Requires: int
+    // Modifies: this
+    // Effects: If the integer is in the set remove it, otherwise do nothing.
+    public void remove(Integer num) {
+        nums.remove(num);
     }
 
     // Effects: Returns the size of the integer set.
