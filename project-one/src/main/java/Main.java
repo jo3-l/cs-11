@@ -26,33 +26,32 @@ public class Main {
     public static int problemTwo(String str) {
         int bobCount = 0;
 
-        int i = 0;
-        while (i <= str.length() - 3) {
-            if (str.charAt(i) != 'b') {
-                i += 1;
-                continue;
+        int state = 0;
+        loop: for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            switch (state) {
+                case 0:
+                    if (c == 'b') state = 1;
+                    continue loop;
+                case 1:
+                    if (c == 'o') state = 2;
+                    else if (c != 'b') state = 0;
+                    continue loop;
+                case 2:
+                    if (c == 'b') {
+                        ++bobCount;
+                        state = 1;
+                    } else {
+                        state = 0;
+                    }
             }
-
-            char next = str.charAt(i + 1);
-            if (next != 'o') {
-                i += (next == 'b') ? 1 : 2;
-                continue;
-            }
-
-            if (str.charAt(i + 2) != 'b') {
-                i += 3;
-                continue;
-            }
-
-            ++bobCount;
-            i += 2;
         }
 
         return bobCount;
     }
 
     public static String problemThree(String str) {
-        if (str.length() == 0) return "";
+        if (str.isEmpty()) return "";
 
         String longest = str.substring(0, 1);
         StringBuilder buffer = new StringBuilder(longest);
