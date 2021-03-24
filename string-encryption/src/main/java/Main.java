@@ -1,17 +1,18 @@
 import java.util.Random;
 
-// TODO: Needs a lot more comments.
+
 public class Main {
     // The Random instance we use to generate random integers.
-    private static final Random random = new Random();
+    public static final Random random = new Random();
 
     public static void main(String[] args) {
         String str = "Hello world, foo bar baz buz :D";
+        int key = 123;
 
-        String encoded = encode(str, 123);
+        String encoded = encode(str, key);
         System.out.println("Encoded: " + encoded);
 
-        String decoded = decode(encoded, 123);
+        String decoded = decode(encoded, key);
         System.out.println("Decoded: " + decoded);
     }
 
@@ -22,31 +23,35 @@ public class Main {
      * @param key Key to use when encoding the string. This should be a positive integer less than 500,000.
      * @return The encoded string.
      */
-    private static String encode(String str, int key) {
+    public static String encode(String str, int key) {
         StringBuilder encoded = new StringBuilder();
 
-        // We use a somewhat secure (but not very fast) algorithm for encoding strings. Essentially, we loop through
-        // all characters of the string we wish to decode, and then get the character code. We then multiply this code
-        // by 31. Then, if the number of iterations is a multiple of two, we add the key to the resulting number. Otherwise,
-        // we subtract the key from the resulting number. We then pad this number to 7 digits using leading zeros, and then
-        // write it to the decoded string. To further throw people off, we then append 2 random characters in the ASCII
-        // range to the string.
-        boolean isNegative = false;
+        // Short overview of the steps used for encoding a string:
+        //
+        // - For each character code in the string:
+        // - Multiple the character code by 31.
+        // - If the number of iterations done so far is a multiple of 2, then add the `key` to the resulting value.
+        // - Otherwise, subtract the `key` from the resulting value.
+        // - Pad the value with zeros up to 7 digits.
+        // - Append two random ASCII characters.
+        boolean shouldAdd = true;
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
 
-            int toAdd = isNegative ? key : -key;
-            isNegative = !isNegative;
+            int encodedChar = c * 31;
+            if (shouldAdd) encodedChar += key;
+            else encodedChar -= key;
 
-            // The maximum value of the `char` datatype is 65535. Thus, the maximum value of a `char` * 31 is 2031585,
-            // which is 7 digits long. As such, let us pad to 7 zeros.
-            String value = padStart(String.valueOf(c * 31 + toAdd), 7);
+            // Pad with zeros to 7 digits.
+            String value = padStart(String.valueOf(encodedChar), 7);
 
             encoded.append(value);
 
             // Generate two random characters to append to the encoded string.
             encoded.append((char) (32 + random.nextInt(95)));
             encoded.append((char) (32 + random.nextInt(95)));
+
+            shouldAdd = !shouldAdd;
         }
 
         return encoded.toString();
@@ -59,22 +64,30 @@ public class Main {
      * @param key Key to use when decoding the string.
      * @return The decoded string, or `null` if it was invalid.
      */
-    private static String decode(String str, int key) {
+    public static String decode(String str, int key) {
+        // A string encoded using the above algorithm must have a length that is a multiple of 9. This is because each
+        // character in the original string becomes 7 characters + 2 random characters in the encoded string. As such,
+        // if the string's length is _not_ a multiple of 9, it is invalid.
         if (str.length() % 9f != 0) return null;
 
         StringBuilder decoded = new StringBuilder();
 
+        // Current index in the string.
         int i = 0;
-        boolean isNegative = false;
+        boolean shouldSubtract = true;
         while (i < str.length()) {
+            // Get the next 7 characters from the string.
             String value = str.substring(i, i + 7);
 
-            int toSub = isNegative ? key : -key;
-            isNegative = !isNegative;
+            int decodedChar = Integer.parseInt(value);
+            if (shouldSubtract) decodedChar -= key;
+            else decodedChar += key;
+            decodedChar /= 31;
 
-            char actual = (char) ((Integer.parseInt(value) - toSub) / 31);
-            decoded.append(actual);
+            decoded.append((char) decodedChar);
 
+            shouldSubtract = !shouldSubtract;
+            // Skip past the 7 characters we just read + the 2 random characters, which are useless.
             i += 9;
         }
 
@@ -84,13 +97,15 @@ public class Main {
     /**
      * Pads a string to a given length with leading zeros.
      *
-     * @param str String to pad.
-     * @param expectedLength The length to pad to.
+     * @param str    String to pad.
+     * @param length The length to pad to.
      * @return The padded string.
      */
-    private static String padStart(String str, int expectedLength) {
-        int delta = expectedLength - str.length();
-        if (delta >= 0) return "0".repeat(delta) + str;
-        else return str;
+    public static String padStart(String str, int length) {
+        // Compute the numbers of leading zeros we need to add.
+        int delta = length - str.length();
+        // If the string's length is greater than or equal to the target length, return the string.
+        if (delta <= 0) return str;
+        else return "0".repeat(delta) + str;
     }
 }
