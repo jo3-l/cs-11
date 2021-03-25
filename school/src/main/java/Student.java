@@ -1,3 +1,6 @@
+/**
+ * Represents a student, containing information about their first and last name, grade, and student number.
+ */
 public class Student {
     private static int studentNumberCounter = 1;
 
@@ -6,6 +9,13 @@ public class Student {
     private int grade;
     private final int studentNumber;
 
+    /**
+     * Creates a new student.
+     *
+     * @param firstName First name of the student.
+     * @param lastName  Last name of the student.
+     * @param grade     The grade the student is in.
+     */
     public Student(String firstName, String lastName, int grade) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -41,6 +51,9 @@ public class Student {
         this.grade = grade;
     }
 
+    /**
+     * Prints information about this student to standard output, using the format <code>Name: [full name] Grade: [grade]</code>.
+     */
     public void print() {
         System.out.println("Name: " + firstName + " " + lastName + " Grade: " + grade);
     }
