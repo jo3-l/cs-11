@@ -13,7 +13,7 @@ Repository for my online Computer Science 11 course.
 - [x] [Project One](./project-one) 
 - [x] [School](./school)
 - [x] [Integer Set](./integer-set)
-- [ ] [Data Abstraction](./data-abstraction)
+- [x] [Data Abstraction](./data-abstraction)
 - [ ] [Game of Chance](./game-of-chance)
 - [ ] [Friends Book](./friends-book)
 - [ ] [Reading Text](./reading-text)
