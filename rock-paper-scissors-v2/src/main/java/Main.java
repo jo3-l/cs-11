@@ -15,33 +15,20 @@ public class Main {
         winningChoices.put(scissors, paper); // Scissors beats paper.
         winningChoices.put(paper, rock); // Paper beats rock.
 
-        // Messages for different outcomes.
-        String winMessage = "You Win!";
-        String drawMessage = "Draw!";
-        String loseMessage = "You Lose!";
-
-        // Various other messages displayed to the user.
-        String choiceInfoFormatStr = "Computer Choice: %s  Player choice: %s\n";
-        String roundStartFormatStr = "Wins: %d Losses: %d\nPlayers Choice:\n";
-
-        String gameStartMessage = "Choose rock paper or scissors. 'r' for rock, 'p' for paper and 's' for scissors. To exit choose 'x'";
-        String invalidInputMessage = "Invalid selection please play again.";
-        String gameEndMessage = "Thank you for playing!";
-
         // A banner of asterisks used to separate different messages.
         String separator = "*".repeat(50);
 
-        Scanner scanner = new Scanner(System.in);
-
+        // How many wins and losses the user has.
         int userWins = 0;
         int userLosses = 0;
 
-        // Send the game start message.
-        System.out.println(gameStartMessage);
+        System.out.println("Choose rock paper or scissors. 'r' for rock, 'p' for paper and 's' for scissors. To exit choose 'x'");
         System.out.println(separator);
 
+        Scanner scanner = new Scanner(System.in);
+        // Main game loop. We will break out of this loop when the user sends an 'x' to exit.
         while (true) {
-            System.out.printf(roundStartFormatStr, userWins, userLosses);
+            System.out.println("Wins: " + userWins + " Losses: " + userLosses);
 
             // Retrieve the next line the user types.
             String input = scanner.nextLine();
@@ -55,12 +42,12 @@ public class Main {
             } else if (input.equals("s")) {
                 userChoice = scissors;
             } else if (input.equals("x")) {
-                System.out.println(gameEndMessage);
+                System.out.println("Thank you for playing!");
                 // Stop code execution at this point so no code beyond this point is executed.
                 return;
             } else {
-                // If we've gotten to this branch, then the input the user sent was invalid. Tell them to try again.
-                System.out.println(invalidInputMessage);
+                // If we've gotten to this branch, then the input the user sent was invalid; tell them to try again.
+                System.out.println("Invalid selection please play again.");
                 System.out.println(separator);
                 // Continue to the next iteration of the game loop.
                 continue;
@@ -75,20 +62,20 @@ public class Main {
             else if (computerChoiceInt == 1) computerChoice = paper;
             else computerChoice = scissors;
 
+            // Check whether the user's choice wins, using the `winningChoices` Map we constructed earlier.
             if (winningChoices.get(userChoice).equals(computerChoice)) {
-                // Check whether the user's choice wins, using the `winningChoices` Map we constructed earlier.
-                System.out.println(winMessage);
+                System.out.println("You Win!");
                 ++userWins;
             } else if (userChoice.equals(computerChoice)) {
                 // If they're the same, then it's a draw.
-                System.out.println(drawMessage);
+                System.out.println("Draw!");
             } else {
                 // Otherwise, it's a loss.
-                System.out.println(loseMessage);
+                System.out.println("You Lose!");
                 ++userLosses;
             }
 
-            System.out.printf(choiceInfoFormatStr, computerChoice, userChoice);
+            System.out.println("Computer Choice: " + computerChoice + "  Player choice: " + userChoice);
             System.out.println(separator);
         }
     }
