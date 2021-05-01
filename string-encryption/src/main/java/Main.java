@@ -29,11 +29,11 @@ public class Main {
         // Short overview of the steps used for encoding a string:
         //
         // - For each character code in the string:
-        // - Multiple the character code by 31.
-        // - If the number of iterations done so far is a multiple of 2, then add the `key` to the resulting value.
-        // - Otherwise, subtract the `key` from the resulting value.
-        // - Pad the value with zeros up to 7 digits.
-        // - Append two random ASCII characters.
+        //  - Multiple the character code by 31.
+        //  - If the number of iterations done so far is a multiple of 2, then add the `key` to the resulting value.
+        //  - Otherwise, subtract the `key` from the resulting value.
+        //  - Pad the value with zeros up to 7 digits.
+        //  - Append two random ASCII characters.
         boolean shouldAdd = true;
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
