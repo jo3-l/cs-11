@@ -18,6 +18,9 @@ public class Main {
         values = new int[]{1, 2, 3};
         System.out.println(Arrays.toString(add(values, 123)));
 
+        values = new int[]{2, 3, 5};
+        System.out.println(Arrays.toString(insertAt(values, 2, 4)));
+
         values = new int[]{1, 2};
         System.out.println(Arrays.toString(pop(values)));
     }
@@ -30,7 +33,7 @@ public class Main {
      * @return A copy of the array with the element added to the end.
      */
     public static int[] add(int[] array, int element) {
-        // `insertAt`
+        // `add` calls `insertAt` with the index set to the array length, which will append an element to the end.
         return insertAt(array, array.length, element);
     }
 
