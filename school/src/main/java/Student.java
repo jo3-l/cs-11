@@ -2,6 +2,7 @@
  * Represents a student, containing information about their first and last name, grade, and student number.
  */
 public class Student {
+    // Counter for the student numbers.
     private static int studentNumberCounter = 1;
 
     private String firstName;
@@ -20,6 +21,7 @@ public class Student {
         this.firstName = firstName;
         this.lastName = lastName;
         this.grade = grade;
+        // assign student number to the current student number, then increment it.
         this.studentNumber = Student.studentNumberCounter++;
     }
 
