@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="612.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <VBox alignment="TOP_CENTER" prefHeight="260.0" prefWidth="600.0" spacing="10.0">
+         <children>
+            <ImageView fitHeight="174.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icon.png" />
+               </image>
+            </ImageView>
+            <Text fill="BLACK" opacity="0.54" strokeType="OUTSIDE" strokeWidth="0.0" text="Higher/Lower is a game of luck. I will select a number from 1-6 and you will guess if the next number I pick will be higher/lower than the previous one. If you are correct, your $ increases; if not, you lose all your $ and begin a new game. You may cash out at any time, meaning that you will start a new game. Your winnings increase as you progress, but the probability of losing also increases!" textAlignment="CENTER" wrappingWidth="399.91275787353516" />
+         </children>
+      </VBox>
+      <HBox alignment="CENTER" layoutX="10.0" layoutY="412.0" prefHeight="47.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="currentNumberLabel" prefHeight="33.0" prefWidth="110.0" text="Current number: 1" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="43.0" prefWidth="600.0" spacing="5.0">
+         <children>
+            <Label text="Guess:" />
+            <ComboBox fx:id="higherLowerComboBox" prefWidth="150.0" promptText="Select a guess" />
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="59.0" prefWidth="600.0" spacing="5.0">
+         <children>
+            <Button fx:id="rollDiceBtn" mnemonicParsing="false" onAction="#handleRollDice" text="Roll dice" />
+            <Button fx:id="cashOutBtn" layoutX="277.0" layoutY="18.0" mnemonicParsing="false" onAction="#handleCashOut" text="Cash out" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="currentStateLabel" text="Dust..." wrapText="true" />
+         </children>
+      </HBox>
+      <VBox alignment="CENTER" prefHeight="62.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="currentWinningsLabel" prefHeight="18.0" prefWidth="126.0" text="Current winnings: $0" />
+            <Label fx:id="roundNumberLabel" prefHeight="18.0" prefWidth="105.0" text="Round number: 1" />
+         </children>
+      </VBox>
+      <HBox alignment="CENTER" prefHeight="58.0" prefWidth="599.0">
+         <children>
+            <Label fx:id="totalWinningsLabel" prefHeight="18.0" prefWidth="215.0" text="Total winnings across all games: $0" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
