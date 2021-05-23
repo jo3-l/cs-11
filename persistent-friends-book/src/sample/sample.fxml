@@ -137,6 +137,7 @@
                         <Button layoutX="186.0" layoutY="129.0" mnemonicParsing="false" onAction="#saveFriendsToFile" text="Save friends to file" />
                         <Label layoutX="50.0" layoutY="66.0" text="File path:" />
                         <TextField fx:id="filePathTextField" layoutX="50.0" layoutY="90.0" />
+                        <Label fx:id="loadRestoreStatusLabel" layoutX="50.0" layoutY="177.0" />
                      </children>
                   </AnchorPane>
               </content>

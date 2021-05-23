@@ -34,6 +34,7 @@ public class Controller {
     public Text emailErrorText;
     public Text birthdayErrorText;
     public TextField filePathTextField;
+    public Label loadRestoreStatusLabel;
 
     public void handleCreateFriend(ActionEvent actionEvent) {
         boolean isValid = true;
@@ -134,10 +135,9 @@ public class Controller {
             List<Friend> friends = DatabaseUtils.readFile(file);
             friendsView.getItems().clear();
             friendsView.getItems().addAll(friends);
-            // TODO: show done
+            loadRestoreStatusLabel.setText("Successfully loaded " + friends.size() + " friends from file.");
         } catch (IOException e) {
-            e.printStackTrace();
-            // TODO: show error
+            loadRestoreStatusLabel.setText("Encountered an error while reading file. Are you sure it exists?");
         } finally {
             filePathTextField.clear();
         }
@@ -147,10 +147,9 @@ public class Controller {
         String file = filePathTextField.getText();
         try {
             DatabaseUtils.writeFile(file, friendsView.getItems());
-            // TODO: show done
+            loadRestoreStatusLabel.setText("Successfully saved " + friendsView.getItems().size() + " friends to file.");
         } catch (IOException e) {
-            e.printStackTrace();
-            // TODO: show error
+            loadRestoreStatusLabel.setText("Encountered an error while writing to the file.");
         } finally {
             filePathTextField.clear();
         }
