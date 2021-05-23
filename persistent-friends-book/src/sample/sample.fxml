@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+    <children>
+        <TabPane prefHeight="407.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="Create Friend">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0">
+                            <children>
+                                <VBox alignment="CENTER_RIGHT" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                                    <children>
+                                        <Label text="Name:">
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </Label>
+                                        <Label text="Phone number:">
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </Label>
+                                        <Label text="Email:">
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </Label>
+                                        <Label text="Birthday:">
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </VBox>
+                                <VBox alignment="CENTER_LEFT" layoutX="114.0" layoutY="14.0" prefHeight="200.0" prefWidth="184.0" spacing="10.0">
+                                    <children>
+                                        <TextField fx:id="nameTextField" />
+                                        <TextField fx:id="phoneNumberTextField" />
+                                        <TextField fx:id="emailTextField" />
+                                        <DatePicker fx:id="birthdayPicker" />
+                                    </children>
+                                    <padding>
+                                        <Insets left="10.0" />
+                                    </padding>
+                                </VBox>
+                                <HBox alignment="CENTER_LEFT" layoutX="6.0" layoutY="178.0" prefHeight="73.0" prefWidth="600.0">
+                                    <children>
+                                        <Button mnemonicParsing="false" onAction="#handleCreateFriend" text="Create" />
+                                    </children>
+                                    <padding>
+                                        <Insets left="120.0" />
+                                    </padding>
+                                </HBox>
+                                <Text fx:id="phoneNumberErrorText" layoutX="306.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone number should be in XXX-XXX-XXXXX format." visible="false" wrappingWidth="235.220703125">
+                                    <font>
+                                        <Font size="11.0" />
+                                    </font>
+                                </Text>
+                                <Text fx:id="nameErrorText" layoutX="306.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name must be provided." visible="false" wrappingWidth="235.220703125">
+                                    <font>
+                                        <Font size="11.0" />
+                                    </font>
+                                </Text>
+                                <Text fx:id="emailErrorText" layoutX="306.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email should contain a '@'." visible="false" wrappingWidth="235.220703125">
+                                    <font>
+                                        <Font size="11.0" />
+                                    </font>
+                                </Text>
+                                <Text fx:id="birthdayErrorText" layoutX="306.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Birthday should be before the current time." visible="false" wrappingWidth="235.220703125">
+                                    <font>
+                                        <Font size="11.0" />
+                                    </font>
+                                </Text>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+                <Tab text="View Friends">
+                    <content>
+                        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="600.0">
+                            <children>
+                                <ListView fx:id="friendsView" layoutX="14.0" layoutY="5.0" onMouseClicked="#selectFriend" prefHeight="358.0" prefWidth="200.0" />
+                                <Label fx:id="friendInformationLabel" layoutX="305.0" layoutY="35.0" text="Friend Information" visible="false">
+                                    <font>
+                                        <Font size="22.0" />
+                                    </font>
+                                </Label>
+                                <VBox fx:id="friendInfoVBox" alignment="TOP_RIGHT" layoutX="221.0" layoutY="88.0" prefHeight="124.0" prefWidth="138.0" spacing="13.0" visible="false">
+                                    <children>
+                                        <Label text="Name:" />
+                                        <Label text="Phone number:" />
+                                        <Label text="Email:" />
+                                        <Label text="Birthday" />
+                                    </children>
+                                </VBox>
+                                <VBox layoutX="368.0" layoutY="87.0" prefHeight="127.0" prefWidth="159.0" spacing="5.0">
+                                    <children>
+                                        <TextField fx:id="selectedNameTextField" visible="false" />
+                                        <TextField fx:id="selectedPhoneNumberTextField" visible="false" />
+                                        <TextField fx:id="selectedEmailTextField" visible="false" />
+                                        <DatePicker fx:id="selectedBirthdayTextField" visible="false" />
+                                    </children>
+                                </VBox>
+                                <Button fx:id="updateFriendBtn" layoutX="368.0" layoutY="221.0" mnemonicParsing="false" onAction="#handleUpdateFriend" text="Update" visible="false" />
+                                <Button fx:id="unfriendBtn" layoutX="430.0" layoutY="221.0" mnemonicParsing="false" onAction="#handleUnfriend" text="Unfriend" visible="false" />
+                                <Text fx:id="birthdayText" layoutX="275.0" layoutY="306.0" strokeType="OUTSIDE" strokeWidth="0.0" text="It's [friend]'s [age]th birthday today!" visible="false" wrappingWidth="186.13671875" />
+                                <ImageView fx:id="birthdayIcon" fitHeight="65.0" fitWidth="65.0" layoutX="461.0" layoutY="277.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                                    <image>
+                                        <Image url="@birthday-icon.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </Tab>
+            <Tab text="Load/Restore">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="50.0" layoutY="129.0" mnemonicParsing="false" onAction="#loadFriendsFromFile" text="Load friends from file" />
+                        <Button layoutX="186.0" layoutY="129.0" mnemonicParsing="false" onAction="#saveFriendsToFile" text="Save friends to file" />
+                        <Label layoutX="50.0" layoutY="66.0" text="File path:" />
+                        <TextField fx:id="filePathTextField" layoutX="50.0" layoutY="90.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</VBox>
