@@ -1,5 +1,8 @@
 public class Main {
     public static void main(String[] args) {
+        // This program prints out text representing the interface for a snake-like game.
+        // It uses ANSI escape codes to color text, which may not work on all platforms.
+        // Check out `image.png` for a screenshot of what it looks like.
         String text = "\u001b[36m+------------------------------------------------------------+\u001b[0m\n"
                 + "\u001b[36m|\u001b[0m                                                            \u001b[36m|\u001b[0m\n"
                 + "\u001b[36m|\u001b[0m               \u001b[32m00000000000\u001b[0m                                  \u001b[36m|\u001b[0m\n"
