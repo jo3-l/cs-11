@@ -67,7 +67,22 @@
                               <Insets left="120.0" />
                            </padding>
                         </HBox>
-                        <Text layoutX="306.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone number should be in XXX-XXX-XXXXX format." wrappingWidth="235.220703125">
+                        <Text fx:id="phoneNumberErrorText" layoutX="306.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone number should be in XXX-XXX-XXXXX format." visible="false" wrappingWidth="235.220703125">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="nameErrorText" layoutX="306.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name must be provided." visible="false" wrappingWidth="235.220703125">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="emailErrorText" layoutX="306.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email should contain a '@'." visible="false" wrappingWidth="235.220703125">
+                           <font>
+                              <Font size="11.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="birthdayErrorText" layoutX="306.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Birthday should be before the current time." visible="false" wrappingWidth="235.220703125">
                            <font>
                               <Font size="11.0" />
                            </font>
