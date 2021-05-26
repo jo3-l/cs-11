@@ -21,6 +21,7 @@ public class Main {
         } else {
             System.out.print("That word was found on the following lines (0-indexed): ");
 
+            // join the list of integers using a comma
             StringBuilder lineStr = new StringBuilder();
             for (int i = 0; i < foundLines.size(); i++) {
                 if (i > 0) lineStr.append(", ");
@@ -31,20 +32,28 @@ public class Main {
         }
     }
 
+    // Technically speaking, this whole method is unnecessary -- simply using a BufferedReader in a try-with-resources
+    // statement and calling the lines() method would be enough. However, that's not the point of the exercise here, so
+    // here goes...
     public static List<String> readLinesFromFile(String file) throws IOException {
         List<String> lines = new ArrayList<>();
 
         FileInputStream in = new FileInputStream(file);
-        StringBuilder currentLine = new StringBuilder();
+        StringBuilder currentLine = new StringBuilder(); // buffer for the current line
+        // read characters from the file stream until we hit EOF
         for (int c = in.read(); c != -1; c = in.read()) {
             if (c == '\n') {
+                // flush buffer
                 lines.add(currentLine.toString());
+                // reset buffer
                 currentLine.setLength(0);
             } else {
+                // add character to current line
                 currentLine.append((char) c);
             }
         }
 
+        // something left in the buffer, just add it to the end
         if (currentLine.length() > 0) {
             lines.add(currentLine.toString());
         }
