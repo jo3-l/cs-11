@@ -4,8 +4,10 @@ import java.time.LocalDate;
 import java.util.regex.Pattern;
 
 public class Utils {
+    // 3 numbers, then a hyphen, then 3 numbers, then a hyphen, and finally 4 numbers.
     private static final Pattern PHONE_NUMBER_PATTERN = Pattern.compile("\\d{3}-\\d{3}-\\d{4}");
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^.+@[^.]+\\..+");
+    // Any characters, then an '@', then any characters, then a ., and finally any characters.
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[^@]+@[^.]+\\..+");
 
     public static boolean isPhoneNumberValid(String phoneNumber) {
         return PHONE_NUMBER_PATTERN.matcher(phoneNumber).matches();

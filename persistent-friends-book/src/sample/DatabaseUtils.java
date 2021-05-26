@@ -9,9 +9,9 @@ public class DatabaseUtils {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             return reader
                     .lines()
-                    .filter(line -> !line.isEmpty())
-                    .map(SerializationUtils::deserializeFriend)
-                    .collect(Collectors.toList());
+                    .filter(line -> !line.isEmpty()) // safeguard against empty lines, i.e. at the end of text
+                    .map(SerializationUtils::deserializeFriend) // deserialize line into a Friend object
+                    .collect(Collectors.toList()); // return as list
         }
     }
 
