@@ -33,8 +33,9 @@ public class Controller {
     public Text birthdayErrorText;
 
     public void handleCreateFriend(ActionEvent actionEvent) {
-        boolean isValid = true;
+        boolean isValid = true; // whether the information submitted was valid
 
+        // verify phone number validity
         String phoneNumber = phoneNumberTextField.getText();
         if (phoneNumber.isEmpty() || Utils.isPhoneNumberValid(phoneNumber)) {
             phoneNumberErrorText.setVisible(false);
@@ -43,6 +44,7 @@ public class Controller {
             isValid = false;
         }
 
+        // very email validity
         String email = emailTextField.getText();
         if (email.isEmpty() || Utils.isEmailValid(email)) {
             emailErrorText.setVisible(false);
@@ -51,6 +53,7 @@ public class Controller {
             isValid = false;
         }
 
+        // make sure name is not empty
         String name = nameTextField.getText();
         if (!name.isEmpty()) {
             nameErrorText.setVisible(false);
@@ -59,6 +62,7 @@ public class Controller {
             isValid = false;
         }
 
+        // make sure birthday is valid
         LocalDate birthday = birthdayPicker.getValue();
         if (birthday == null || Utils.isBirthdayValid(birthday)) {
             birthdayErrorText.setVisible(false);
@@ -67,11 +71,13 @@ public class Controller {
             isValid = false;
         }
 
+        // stop early if not valid
         if (!isValid) return;
 
         Friend friend = new Friend(name, phoneNumber, email, birthdayPicker.getValue());
         friendsView.getItems().add(friend);
 
+        // clear fields
         phoneNumberTextField.clear();
         emailTextField.clear();
         nameTextField.clear();
@@ -82,6 +88,7 @@ public class Controller {
         Friend friend = friendsView.getSelectionModel().getSelectedItem();
         if (friend == null) return;
 
+        // display friend information
         refreshFriendInfo(friend);
         setFriendInformationVisibility(true);
     }
@@ -90,27 +97,36 @@ public class Controller {
         Friend friend = friendsView.getSelectionModel().getSelectedItem();
         if (friend == null) return;
 
+        // fields are only updated if they are valid
+        // this is not excellent UX but I didn't really want to get into more designing with error messages / error alerts
+
+        // set name
         String name = selectedNameTextField.getText();
         if (!name.isEmpty()) {
             friend.setName(name);
         }
 
+        // set phone number
         String phoneNumber = selectedPhoneNumberTextField.getText();
         if (phoneNumber.isEmpty() || Utils.isPhoneNumberValid(phoneNumber)) {
             friend.setPhone(phoneNumber);
         }
 
+        // set email
         String email = selectedEmailTextField.getText();
         if (email.isEmpty() || Utils.isEmailValid(email)) {
             friend.setEmail(email);
         }
 
+        // set birthday
         LocalDate birthday = selectedBirthdayTextField.getValue();
         if (birthday == null || Utils.isBirthdayValid(birthday)) {
             friend.setBirthday(birthday);
         }
 
+        // redisplay friend information
         refreshFriendInfo(friend);
+        // refresh the friend list itself in case name was updated
         friendsView.refresh();
     }
 
@@ -120,6 +136,7 @@ public class Controller {
 
         friendsView.getItems().remove(friend);
 
+        // make friend information invisible
         setFriendInformationVisibility(false);
         birthdayText.setVisible(false);
         birthdayIcon.setVisible(false);
