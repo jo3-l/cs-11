@@ -77,7 +77,7 @@ public class BookDatabase {
 
             db.wantToRead.addAll(groups.get(0));
             db.currentlyReading.addAll(groups.get(1));
-            db.alreadyRead.addAll(groups.get(3));
+            db.alreadyRead.addAll(groups.get(2));
         }
 
         return db;
