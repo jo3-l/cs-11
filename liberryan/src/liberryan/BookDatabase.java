@@ -29,40 +29,30 @@ public class BookDatabase {
         }
     }
 
-    public List<Book> getWantToRead() {
-        return wantToRead;
+    public List<Book> getBooksInFolder(BookFolder folder) {
+        switch (folder) {
+            case WANT_TO_READ:
+                return wantToRead;
+            case CURRENTLY_READING:
+                return currentlyReading;
+            case ALREADY_READ:
+                return alreadyRead;
+            default:
+                throw new IllegalStateException();
+        }
     }
 
-    public void addBookToWantToRead(Book book) {
-        wantToRead.add(book);
+    public void removeBookFromList(BookFolder folder, Book book) {
+        getBooksInFolder(folder).remove(book);
     }
 
-    public void removeBookFromWantToRead(Book book) {
-        wantToRead.remove(book);
+    public void addBookToList(BookFolder folder, Book book) {
+        getBooksInFolder(folder).add(book);
     }
 
-    public List<Book> getCurrentlyReading() {
-        return currentlyReading;
-    }
-
-    public void addBookToCurrentlyReading(Book book) {
-        currentlyReading.add(book);
-    }
-
-    public void removeBookFromCurrentlyReading(Book book) {
-        currentlyReading.remove(book);
-    }
-
-    public List<Book> getAlreadyRead() {
-        return alreadyRead;
-    }
-
-    public void addBookToAlreadyRead(Book book) {
-        alreadyRead.add(book);
-    }
-
-    public void removeBookFromAlreadyRead(Book book) {
-        alreadyRead.remove(book);
+    public void moveBookToFolder(BookFolder from, BookFolder to, Book book) {
+        removeBookFromList(from, book);
+        addBookToList(to, book);
     }
 
     public static BookDatabase fromFile(String filepath) throws IOException {
