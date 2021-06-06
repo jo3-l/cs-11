@@ -15,7 +15,7 @@ Repository for my online Computer Science 11 course.
 - [x] [Integer Set](./integer-set)
 - [x] [Data Abstraction](./data-abstraction)
 - [x] [Game of Chance](./game-of-chance)
-- [x] [Friends Book](./friends-book) \[Not handed in\]
-- [x] [Reading Text](./reading-text) \[Not handed in\]
-- [x] [Persistent Friends Book](./persistent-friends-book) \[Not handed in\]
-- [ ] [Project Two](./project-two)
+- [x] [Friends Book](./friends-book)
+- [x] [Reading Text](./reading-text)
+- [x] [Persistent Friends Book](./persistent-friends-book)
+- [ ] [Final Project](./liberryan)
