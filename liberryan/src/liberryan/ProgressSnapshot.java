@@ -7,7 +7,7 @@ public class ProgressSnapshot {
     private final int pagesRead;
 
     public ProgressSnapshot(int pagesRead) {
-        this(Instant.now(), pagesRead);
+        this(Time.currentInstant(), pagesRead);
     }
 
     public ProgressSnapshot(Instant time, int pagesRead) {

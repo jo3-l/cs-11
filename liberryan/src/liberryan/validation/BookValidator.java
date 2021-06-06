@@ -1,8 +1,7 @@
 package liberryan.validation;
 
 import liberryan.Book;
-
-import java.time.LocalDate;
+import liberryan.Time;
 
 public class BookValidator {
     private static Validator<Book, Field> instance;
@@ -32,7 +31,7 @@ public class BookValidator {
                 )
                 .addValidation(
                         book -> book.getPublishedDate() != null
-                                && book.getPublishedDate().isBefore(LocalDate.now()),
+                                && book.getPublishedDate().isBefore(Time.currentLocalDate()),
                         "Published date must be before the current date",
                         Field.PUBLISHED_DATE
                 );

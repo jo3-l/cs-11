@@ -7,7 +7,7 @@ public class Rating {
     private final int rating;
 
     public Rating(int rating) {
-        this(Instant.now(), rating);
+        this(Time.currentInstant(), rating);
     }
 
     public Rating(Instant time, int rating) {
