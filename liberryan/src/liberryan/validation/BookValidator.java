@@ -3,49 +3,35 @@ package liberryan.validation;
 import liberryan.Book;
 import liberryan.Time;
 
+import java.util.EnumSet;
+import java.util.Set;
+
 public class BookValidator {
-    private static Validator<Book, Field> instance;
-
-    public static Validator<Book, Field> getInstance() {
-        if (instance != null) return instance;
-        return instance = new Validator<Book, Field>()
-                .addValidation(
-                        book -> book.getGenre() == null,
-                        "Book genre is required",
-                        Field.BOOK_GENRE
-                )
-                .addValidation(
-                        book -> book.getAuthor().isEmpty(),
-                        "Book author is a required field",
-                        Field.AUTHOR
-                )
-                .addValidation(
-                        book -> book.getName().isEmpty(),
-                        "Book name is a required field",
-                        Field.BOOK_NAME
-                )
-                .addValidation(
-                        book -> book.getPageCount() < 0,
-                        "Book page count cannot be negative",
-                        Field.PAGE_COUNT
-                )
-                .addValidation(
-                        book -> book.getPublishedDate() != null
-                                && book.getPublishedDate().isBefore(Time.currentLocalDate()),
-                        "Published date must be before the current date",
-                        Field.PUBLISHED_DATE
-                );
+    public static void validate(Book book, ValidationErrorList<Book.Field> errors) {
+        validate(book, errors, EnumSet.noneOf(Book.Field.class));
     }
 
-    public static ValidationErrorDisplaySynchronizer<Field> getDisplaySynchronizer() {
-        return new ValidationErrorDisplaySynchronizer<>(Field.class);
-    }
+    public static void validate(Book book, ValidationErrorList<Book.Field> errors, Set<Book.Field> skip) {
+        if (!skip.contains(Book.Field.NAME) && book.getName().isEmpty()) {
+            errors.add(Book.Field.NAME, "Book name is required");
+        }
 
-    public enum Field {
-        BOOK_GENRE,
-        AUTHOR,
-        BOOK_NAME,
-        PAGE_COUNT,
-        PUBLISHED_DATE,
+        if (!skip.contains(Book.Field.GENRE) && book.getGenre() == null) {
+            errors.add(Book.Field.GENRE, "Book genre is required");
+        }
+
+        if (!skip.contains(Book.Field.AUTHOR) && book.getAuthor().isEmpty()) {
+            errors.add(Book.Field.AUTHOR, "Book author is required");
+        }
+
+        if (!skip.contains(Book.Field.PAGE_COUNT) && book.getPageCount() <= 0) {
+            errors.add(Book.Field.PAGE_COUNT, "Book page count must be positive");
+        }
+
+        if (!skip.contains(Book.Field.PUBLISHED_DATE)
+                && book.getPublishedDate() != null
+                && book.getPublishedDate().isBefore(Time.currentLocalDate())) {
+            errors.add(Book.Field.PUBLISHED_DATE, "Book published date must be before now");
+        }
     }
 }

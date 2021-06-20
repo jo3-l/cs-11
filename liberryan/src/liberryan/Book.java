@@ -2,11 +2,11 @@ package liberryan;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Book {
-    private final List<ProgressSnapshot> progressSnapshots = new ArrayList<>();
+    private final List<ProgressUpdate> progressUpdates;
+    private int totalPagesRead = 0;
     private Genre genre;
     private String name;
     private String author;
@@ -14,13 +14,53 @@ public class Book {
     private Rating rating;
     private LocalDate publishedDate;
 
-    public Book(Genre genre, String name, String author, int pageCount, Rating rating, LocalDate publishedDate) {
+    public Book(List<ProgressUpdate> progressUpdates,
+                Genre genre,
+                String name,
+                String author,
+                int pageCount,
+                Rating rating,
+                LocalDate publishedDate) {
+        this.progressUpdates = progressUpdates;
+        this.totalPagesRead = computeTotalPagesRead();
         this.genre = genre;
         this.name = name;
         this.author = author;
         this.pageCount = pageCount;
         this.rating = rating;
         this.publishedDate = publishedDate;
+    }
+
+    private int computeTotalPagesRead() {
+        return progressUpdates.stream().mapToInt(ProgressUpdate::getPagesRead).sum();
+    }
+
+    public int getCurrentPage() {
+        return totalPagesRead;
+    }
+
+    public void setCurrentPage(int page) {
+        totalPagesRead += page;
+        ProgressUpdate update = new ProgressUpdate(totalPagesRead);
+        progressUpdates.add(update);
+    }
+
+    public List<ProgressUpdate> getProgressUpdates() {
+        return progressUpdates;
+    }
+
+    public int getPagesReadBetween(Instant startTime, Instant endTime) {
+        int firstPage = progressUpdates
+                .stream()
+                .filter(update -> update.getTime().isBefore(startTime))
+                .mapToInt(ProgressUpdate::getPagesRead)
+                .sum();
+        int lastPage = progressUpdates
+                .stream()
+                .filter(update -> update.getTime().isBefore(endTime))
+                .mapToInt(ProgressUpdate::getPagesRead)
+                .sum();
+        return lastPage - firstPage;
     }
 
     public Genre getGenre() {
@@ -71,36 +111,13 @@ public class Book {
         this.publishedDate = publishedDate;
     }
 
-    public int getCurrentPage() {
-        if (progressSnapshots.isEmpty()) return 0;
-        ProgressSnapshot latestSnapshot = progressSnapshots.get(progressSnapshots.size() - 1);
-        return latestSnapshot.getPagesRead();
-    }
-
-    public void setCurrentPage(int page) {
-        ProgressSnapshot snapshot = new ProgressSnapshot(page);
-        progressSnapshots.add(snapshot);
-    }
-
-    public int getPagesReadBetween(Instant startTime, Instant endTime) {
-        // find the first snapshot made after startTime, then access its page number
-        // if no such snapshot exists, simply default to 0
-        int firstPage = progressSnapshots
-                .stream()
-                .filter(snapshot -> snapshot.getTime().isAfter(startTime))
-                .findFirst()
-                .map(ProgressSnapshot::getPagesRead)
-                .orElse(0);
-
-        // find the last snapshot made before endTime, then access its page number
-        // if no such snapshot exists, default to the current page
-        int lastPage = progressSnapshots
-                .stream()
-                .filter(snapshot -> snapshot.getTime().isBefore(endTime))
-                .reduce((a, b) -> b) // get the last value in the stream through a reduction that always return the second value.
-                .map(ProgressSnapshot::getPagesRead)
-                .orElseGet(this::getCurrentPage);
-
-        return lastPage - firstPage;
+    public enum Field {
+        PROGRESS_UPDATES,
+        GENRE,
+        NAME,
+        AUTHOR,
+        PAGE_COUNT,
+        RATING,
+        PUBLISHED_DATE,
     }
 }
