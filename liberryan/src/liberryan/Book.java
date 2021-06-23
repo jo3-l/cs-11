@@ -2,6 +2,7 @@ package liberryan;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 // Represents a book.
@@ -22,7 +23,8 @@ public class Book {
                 int pageCount,
                 Rating rating,
                 LocalDate publishedDate) {
-        this.progressUpdates = progressUpdates;
+        // default progressUpdates to an empty list.
+        this.progressUpdates = progressUpdates == null ? new ArrayList<>() : progressUpdates;
         this.totalPagesRead = computeTotalPagesRead();
         this.genre = genre;
         this.name = name;
