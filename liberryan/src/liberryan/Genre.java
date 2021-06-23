@@ -1,5 +1,6 @@
 package liberryan;
 
+// An enumeration of book genres.
 public enum Genre {
     FANTASY("Fantasy"),
     SCIENCE_FICTION("Science Fiction"),

@@ -7,18 +7,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// Stores books.
 public class BookDatabase {
     private final List<Book> wantToRead = new ArrayList<>();
     private final List<Book> currentlyReading = new ArrayList<>();
     private final List<Book> alreadyRead = new ArrayList<>();
 
-    private final String filepath;
-
-    public BookDatabase(String filepath) {
-        this.filepath = filepath;
-    }
-
-    public void save() throws IOException {
+    // Requires: String filepath.
+    // Modifies: Nothing.
+    // Effects: Attempts to save the state of the book database to disk at the filepath provided.
+    // The current value of the file will be overwritten.
+    // On failure, an IOException is thrown.
+    //
+    // The format is:
+    //  books in 'want to read' folder + newline
+    //  + books in 'currently reading' folder + newline
+    //  + books in 'already read' folder
+    public void save(String filepath) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath, false))) {
             String encoded = BookSerializer.encodeMany(wantToRead)
                     + "\n" + BookSerializer.encodeMany(currentlyReading)
@@ -27,6 +32,9 @@ public class BookDatabase {
         }
     }
 
+    // Requires: BookFolder folder.
+    // Modifies: Nothing.
+    // Effects: Gets the list of books in the folder provided.
     public List<Book> getBooksInFolder(BookFolder folder) {
         switch (folder) {
             case WANT_TO_READ:
@@ -40,6 +48,9 @@ public class BookDatabase {
         }
     }
 
+    // Requires: Nothing.
+    // Modifies: Nothing.
+    // Effects: Gets all books stored in the database.
     public List<Book> getAllBooks() {
         List<Book> books = new ArrayList<>(wantToRead.size() + currentlyReading.size() + alreadyRead.size());
         books.addAll(wantToRead);
@@ -48,21 +59,35 @@ public class BookDatabase {
         return books;
     }
 
+    // Requires: BookFolder folder, Book book.
+    // Modifies: this, wantToRead, currentlyReading, alreadyRead.
+    // Effects: Removes the book from the folder provided. If the book is not a member of the list, this function does
+    // nothing.
     public void removeBookFromList(BookFolder folder, Book book) {
         getBooksInFolder(folder).remove(book);
     }
 
+    // Requires: BookFolder folder, Book book.
+    // Modifies: this, wantToRead, currentlyReading, alreadyRead.
+    // Effects: Adds the book to the folder provided.
     public void addBookToList(BookFolder folder, Book book) {
         getBooksInFolder(folder).add(book);
     }
 
+    // Requires: BookFolder from, BookFolder to, Book book.
+    // Modifies: this, wantToRead, currentlyReading, alreadyRead.
+    // Effects: Moves the book from the folder 'from' to the folder 'to'.
     public void moveBookToFolder(BookFolder from, BookFolder to, Book book) {
         removeBookFromList(from, book);
         addBookToList(to, book);
     }
 
+    // Requires: String filepath.
+    // Modifies: Nothing.
+    // Effects: Creates a book database instance from the data at the filepath provided.
+    // On failure, an IOException is thrown.
     public static BookDatabase fromFile(String filepath) throws IOException {
-        BookDatabase db = new BookDatabase(filepath);
+        BookDatabase db = new BookDatabase();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             List<List<Book>> groups = reader
@@ -71,6 +96,7 @@ public class BookDatabase {
                     .map(BookSerializer::decodeMany) // decode book list
                     .collect(Collectors.toList());
 
+            // add books to state
             db.wantToRead.addAll(groups.get(0));
             db.currentlyReading.addAll(groups.get(1));
             db.alreadyRead.addAll(groups.get(2));
