@@ -1,6 +1,6 @@
 package liberryan.validation;
 
-import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ public class ErrorNotificationSynchronizer<F extends Enum<F>> {
     // Requires: F field, TextField display.
     // Modifies: this, fields.
     // Effects: Connects the given field to a text field where errors corresponding to that field should be displayed.
-    public ErrorNotificationSynchronizer<F> connectField(F field, TextField display) {
+    public ErrorNotificationSynchronizer<F> connectField(F field, Text display) {
         connections.add(new ErrorNotificationMapping<>(field, display));
         return this;
     }
@@ -26,12 +26,12 @@ public class ErrorNotificationSynchronizer<F extends Enum<F>> {
     // are not yet displayed in the GUI.
     public void sync(ValidationErrorList<F> errors) {
         // clear all the previous errors, as they may no longer be applicable
-        for (ErrorNotificationMapping<F> mapping : connections) mapping.getTextField().clear();
+        for (ErrorNotificationMapping<F> mapping : connections) mapping.getTextField().setText(null);
 
         // add all the new validation errors
         for (ValidationError<F> error : errors.getErrors()) {
             // Find the text field where errors should be displayed.
-            TextField textField = connections.stream()
+            Text textField = connections.stream()
                     .filter(mapping -> mapping.getField() == error.getField())
                     .map(ErrorNotificationMapping::getTextField)
                     .findFirst()
@@ -43,9 +43,9 @@ public class ErrorNotificationSynchronizer<F extends Enum<F>> {
     // A tuple of field validation is applied to to the text field where errors should be displayed.
     private static class ErrorNotificationMapping<F extends Enum<F>> {
         private final F field;
-        private final TextField textField;
+        private final Text textField;
 
-        private ErrorNotificationMapping(F field, TextField textField) {
+        private ErrorNotificationMapping(F field, Text textField) {
             this.field = field;
             this.textField = textField;
         }
@@ -60,7 +60,7 @@ public class ErrorNotificationSynchronizer<F extends Enum<F>> {
         // Requires: Nothing.
         // Modifies: Nothing.
         // Effects: Returns the text field where errors should be displayed.
-        public TextField getTextField() {
+        public Text getTextField() {
             return textField;
         }
     }
