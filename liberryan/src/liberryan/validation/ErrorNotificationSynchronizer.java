@@ -20,13 +20,16 @@ public class ErrorNotificationSynchronizer<F extends Enum<F>> {
     }
 
     // Requires: ValidationErrorList<F> errors.
-    // Modifies: Nothing.
+    // Modifies: The text fields connected to the synchronizer internally (they can change, so not possible to list them
+    // out one by one)
     // Effects: Syncs the state of the errors in the GUI with the validation errors provided. More specifically, errors
     // which are displayed in the GUI but are no longer part of errors will be hidden. The same goes for new errors which
     // are not yet displayed in the GUI.
     public void sync(ValidationErrorList<F> errors) {
-        // clear all the previous errors, as they may no longer be applicable
-        for (ErrorNotificationMapping<F> mapping : connections) mapping.getTextField().setText(null);
+        // make all the errors invisible by default, as they may no longer be applicable
+        for (ErrorNotificationMapping<F> mapping : connections) {
+            mapping.getTextField().setVisible(false);
+        }
 
         // add all the new validation errors
         for (ValidationError<F> error : errors.getErrors()) {
@@ -36,7 +39,9 @@ public class ErrorNotificationSynchronizer<F extends Enum<F>> {
                     .map(ErrorNotificationMapping::getTextField)
                     .findFirst()
                     .get();
+            // set its text and make it visible.
             textField.setText(error.getMessage());
+            textField.setVisible(true);
         }
     }
 

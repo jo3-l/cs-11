@@ -1,8 +1,323 @@
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.GridPane?>
+<?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<GridPane fx:controller="liberryan.Controller"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<GridPane alignment="center" hgap="10" prefHeight="545.0" prefWidth="806.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="liberryan.Controller">
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+      <VBox prefHeight="0.0" prefWidth="806.0" GridPane.rowIndex="1" />
+      <TabPane fx:id="tabPane" prefHeight="949.0" prefWidth="806.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+            <Tab text="Overview">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" layoutX="252.0" prefHeight="485.0" prefWidth="440.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Liberryan" wrappingWidth="139.931640625">
+                                 <font>
+                                    <Font size="32.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="50.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Liberryan is a next-gen reading activity tracker. Other than allowing you to keep track of the books you want to read, are reading, and have read in the past, it also keeps track of your reading habits and preferences. Instead of spending time thinking of what books to read next, let the Liberryan suggest ones for you - so you can focus on reading, not book-keeping." wrappingWidth="310.6865234375">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Interested?">
+                                 <font>
+                                    <Font size="23.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="5.0">
+                                 <children>
+                                    <Button fx:id="addNewBookShortcutBtn" mnemonicParsing="false" onMouseClicked="#handleNewBookShortcutClicked" text="Add a new book" />
+                                    <Button fx:id="viewBooksShortcutBtn" mnemonicParsing="false" onMouseClicked="#handleViewBooksShortcutClicked" text="View the books in your collection" />
+                                    <Button fx:id="viewRecentActivityShortcutBtn" mnemonicParsing="false" onMouseClicked="#handleViewRecentActivityShortcutClicked" text="Look at your recent activity" />
+                                    <Button fx:id="viewStatisticsShortcutBtn" mnemonicParsing="false" onMouseClicked="#handleViewStatisticsShortcutClicked" text="Get recommendations and view statistics" />
+                                    <Button fx:id="saveRestoreDataShortcutBtn" mnemonicParsing="false" onMouseClicked="#handleSaveRestoreDataShortcutClicked" text="Back up / restore your data" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="60.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </VBox>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="87.0" layoutY="178.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@icon.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+          <Tab fx:id="addBookTab" text="Add Book">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="483.0" prefWidth="806.0">
+                     <children>
+                        <Text layoutX="142.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add a new book">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                        <HBox layoutX="46.0" layoutY="96.0" prefHeight="226.0" prefWidth="585.0">
+                           <children>
+                              <VBox alignment="CENTER_RIGHT" prefHeight="228.0" prefWidth="169.0" spacing="10.0">
+                                 <children>
+                                    <Label text="Name:" />
+                                    <Label text="Page count:" />
+                                    <Label text="Genre:" />
+                                    <Label text="Author name:" />
+                                    <Label text="Published at:" />
+                                    <Label text="Folder:" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
+                              </VBox>
+                              <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="226.0" prefWidth="219.0" spacing="3.0">
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" />
+                                 </padding>
+                                 <children>
+                                    <TextField fx:id="createBookNameTextField" />
+                                    <TextField fx:id="createBookPageCountTextField" />
+                                    <ComboBox fx:id="createBookGenreComboBox" prefHeight="25.0" prefWidth="191.0" />
+                                    <TextField fx:id="createBookAuthorNameTextField" />
+                                    <DatePicker fx:id="createBookPublishedAtDatePicker" prefHeight="25.0" prefWidth="191.0" />
+                                    <ComboBox fx:id="createBookFolderComboBox" layoutX="20.0" layoutY="111.0" prefHeight="25.0" prefWidth="192.0" />
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="10.0" layoutY="10.0" prefHeight="226.0" prefWidth="305.0" spacing="14.0">
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" top="35.0" />
+                                 </padding>
+                                 <children>
+                                    <Text fx:id="createBookNameValidationFailureText" strokeType="OUTSIDE" strokeWidth="0.0" text="Field for name validation errors" visible="false">
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="createBookPageCountValidationFailureText" layoutX="112.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Field for page count validation errors" visible="false">
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="createBookGenreValidationFailureText" layoutX="112.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Field for genre validation errors" visible="false">
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="createBookAuthorNameValidationFailureText" layoutX="112.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Field for author name validation errors" visible="false">
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="createBookPublishedAtValidationFailureText" layoutX="112.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Field for published at validation errors" visible="false">
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fx:id="createBookFolderValidationFailureText" layoutX="20.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Field for folder validation errors." visible="false">
+                                       <font>
+                                          <Font size="10.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                        <Button fx:id="addBookBtn" layoutX="188.0" layoutY="322.0" mnemonicParsing="false" onMouseClicked="#handleAddBook" text="Add book" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab fx:id="viewBookTab" text="View Books">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TabPane fx:id="bookFolderTab" layoutX="18.0" layoutY="60.0" prefHeight="432.0" prefWidth="771.0" tabClosingPolicy="UNAVAILABLE">
+                          <tabs>
+                            <Tab text="Want to read">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="818.0">
+                                       <children>
+                                          <ListView fx:id="wantToReadListView" layoutX="3.0" layoutY="2.0" onMouseClicked="#handleSelectFriend" prefHeight="404.0" prefWidth="170.0" />
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </Tab>
+                            <Tab text="Currently reading">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <ListView fx:id="currentlyReadingListView" onMouseClicked="#handleSelectFriend" prefHeight="404.0" prefWidth="170.0" />
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </Tab>
+                              <Tab text="Already read">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <ListView fx:id="alreadyReadListView" onMouseClicked="#handleSelectFriend" prefHeight="404.0" prefWidth="170.0" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                          </tabs>
+                        </TabPane>
+                        <Text layoutX="18.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a book folder to view">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Text>
+                        <AnchorPane fx:id="bookInfoAnchorPane" layoutY="97.0" prefHeight="397.0" prefWidth="587.0" visible="false" AnchorPane.rightAnchor="18.0">
+                           <children>
+                              <Text layoutX="141.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book Information">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Text>
+                              <HBox layoutX="1.0" layoutY="81.0" prefHeight="54.0" prefWidth="585.0">
+                                 <children>
+                                    <VBox alignment="CENTER_RIGHT" prefHeight="228.0" prefWidth="169.0" spacing="10.0">
+                                       <children>
+                                          <Label text="Name:" />
+                                          <Label text="Page count:" />
+                                          <Label layoutX="70.0" layoutY="44.0" text="Pages read so far:" />
+                                          <Label text="Genre:" />
+                                          <Label text="Author name:" />
+                                          <Label text="Published at:" />
+                                          <Label text="Rating:" />
+                                          <Label text="Folder:" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                    </VBox>
+                                    <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="226.0" prefWidth="219.0" spacing="3.0">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" />
+                                       </padding>
+                                       <children>
+                                          <TextField fx:id="editBookNameTextField" />
+                                          <TextField fx:id="editBookPageCountTextField" />
+                                          <TextField fx:id="editBookPagesReadSoFarTextField" layoutX="20.0" layoutY="45.0" />
+                                          <ComboBox fx:id="editBookGenreComboBox" prefHeight="25.0" prefWidth="198.0" />
+                                          <TextField fx:id="editBookAuthorNameTextField" />
+                                          <DatePicker fx:id="editBookPublishedAtDatePicker" prefHeight="25.0" prefWidth="200.0" />
+                                          <TextField fx:id="editBookRatingTextField" />
+                                          <ComboBox fx:id="editBookFolderComboBox" layoutX="20.0" layoutY="111.0" prefHeight="25.0" prefWidth="200.0" />
+                                       </children>
+                                    </VBox>
+                                    <VBox prefHeight="226.0" prefWidth="305.0" spacing="14.0">
+                                       <padding>
+                                          <Insets left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                       <children>
+                                          <Text fx:id="editBookNameValidationFailureText" strokeType="OUTSIDE" strokeWidth="0.0" text="Field for name validation errors" visible="false">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="editBookPageCountValidationFailureText" layoutX="112.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Field for page count validation errors" visible="false">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="editBookPagesReadSoFarValidationFailureText" layoutX="20.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Field for pages read so far validation" visible="false">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="editBookGenreValidationFailureText" layoutX="112.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Field for genre validation errors" visible="false">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="editBookAuthorNameValidationFailureText" layoutX="112.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Field for author name validation errors" visible="false">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="editBookPublishedAtValidationFailureText" layoutX="112.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Field for published at validation errors" visible="false">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="editBookRatingValidationFailureText" layoutX="20.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Field for rating validation errors" visible="false">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fx:id="editBookFolderValidationFailureText" layoutX="20.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Field for folder validation errors." visible="false">
+                                             <font>
+                                                <Font size="10.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <Button fx:id="saveEditsBtn" layoutX="141.0" layoutY="327.0" mnemonicParsing="false" onMouseClicked="#handleEditBook" text="Save" />
+                              <Button fx:id="deleteBookBtn" layoutX="194.0" layoutY="327.0" mnemonicParsing="false" onMouseClicked="#handleDeleteBook" text="Delete book" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab fx:id="recentActivityTab" text="Recent Activity">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              </content>
+            </Tab>
+            <Tab fx:id="statisticsTab" text="Statistics">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+            <Tab fx:id="saveRestoreDataTab" text="Save/Restore">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
 </GridPane>

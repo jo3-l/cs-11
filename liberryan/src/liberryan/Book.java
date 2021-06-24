@@ -160,6 +160,11 @@ public class Book {
         this.publishedDate = publishedDate;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     // An enumeration of all publicly exposed fields on a book.
     public enum Field {
         PROGRESS_UPDATES,
