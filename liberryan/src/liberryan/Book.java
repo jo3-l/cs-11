@@ -69,17 +69,11 @@ public class Book {
     // Modifies: Nothing.
     // Effects: Returns the total number of pages read in this book between startTime and endTime.
     public int getPagesReadBetween(Instant startTime, Instant endTime) {
-        int firstPage = progressUpdates
-                .stream()
-                .filter(update -> update.getTime().isBefore(startTime))
+        return progressUpdates.stream()
+                .filter(update -> update.getTime().isAfter(startTime)
+                        && update.getTime().isBefore(endTime))
                 .mapToInt(ProgressUpdate::getPagesRead)
                 .sum();
-        int lastPage = progressUpdates
-                .stream()
-                .filter(update -> update.getTime().isBefore(endTime))
-                .mapToInt(ProgressUpdate::getPagesRead)
-                .sum();
-        return lastPage - firstPage;
     }
 
     // Requires: Nothing.
