@@ -8,15 +8,12 @@ import java.util.List;
 public class ValidationErrorList<F extends Enum<F>> {
     private final List<ValidationError<F>> errors = new ArrayList<>();
 
-    // Requires: Nothing.
-    // Modifies: Nothing.
-    // Effects: Returns the list of errors.
     public List<ValidationError<F>> getErrors() {
         return errors;
     }
 
-    // Requires: F field, String message.
-    // Modifies: this, errors.
+    // Requires: F field - field the error is for, String message - error message.
+    // Modifies: errors.
     // Effects: Adds a validation error for the given field and with the message provided to the internal list of errors.
     public void add(F field, String message) {
         ValidationError<F> error = new ValidationError<>(field, message);

@@ -12,9 +12,10 @@ import java.time.ZoneId;
 public class Time {
     private static Clock clock = Clock.systemDefaultZone();
 
-    // Requires: Instant instant.
+    // Requires: Instant instant - instant to use.
     // Modifies: clock.
-    // Effects: Sets the clock to use internally.
+    // Effects: Sets the clock to use internally; currentInstant() and currentLocalDate() will return a variation of this
+    // instant after this method is called. It can be undone via resetInternalClock().
     public static void useFixedInstant(Instant instant) {
         clock = Clock.fixed(instant, ZoneId.systemDefault());
     }

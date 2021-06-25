@@ -6,7 +6,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.format.TextStyle;
-import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -14,7 +13,8 @@ import java.util.Locale;
 
 // Tracks user reading activity.
 public class ActivityTracker {
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+    private static final DateTimeFormatter formatter = DateTimeFormatter
+            .ofLocalizedDateTime(FormatStyle.SHORT)
             .withLocale(Locale.CANADA)
             .withZone(ZoneId.systemDefault());
 
@@ -32,14 +32,14 @@ public class ActivityTracker {
         List<ActivityLogEntry> entries = new ArrayList<>();
         for (Book book : database.getAllBooks()) {
             if (book.getRating() != null) {
-                String message = "Rated the book '" + book.getName() + "' " + book.getRating().getRating()
-                        + " stars (" + formatter.format(book.getRating().getTime()) + ")";
+                String formattedTime = formatter.format(book.getRating().getTime());
+                String message = "Rated the book '" + book.getName() + "' " + book.getRating().getRating() + " stars (" + formattedTime + ")";
                 entries.add(new ActivityLogEntry(message, book.getRating().getTime()));
             }
 
             for (ProgressUpdate update : book.getProgressUpdates()) {
-                String message = "Read " + update.getPagesRead() + " pages of '" + book.getAuthor()
-                        + "' (" + formatter.format(update.getTime()) + ")";
+                String formattedTime = formatter.format(update.getTime());
+                String message = "Read " + update.getPagesRead() + " pages of '" + book.getAuthor() + "' (" + formattedTime + ")";
                 entries.add(new ActivityLogEntry(message, update.getTime()));
             }
         }
@@ -52,8 +52,7 @@ public class ActivityTracker {
     // Modifies: Nothing.
     // Effects: Determines how many pages a person read between startTime and endTime, and groups the result
     // by weekday. Returns a list of reading activity entries sorted by their weekday.
-    public List<ReadingActivityEntry> getReadingActivityByWeekdayBetween(Instant startTime,
-                                                                         Instant endTime) {
+    public List<ReadingActivityEntry> getReadingActivityByWeekdayBetween(Instant startTime, Instant endTime) {
         List<ReadingActivityEntry> entries = new ArrayList<>();
         for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
             ReadingActivityEntry entry = new ReadingActivityEntry(dayOfWeek, 0);
@@ -136,7 +135,8 @@ public class ActivityTracker {
 
         @Override
         public String toString() {
-            return getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.CANADA) + " - Read " + pagesRead + " pages";
+            String dayOfWeekName = dayOfWeek.getDisplayName(TextStyle.FULL, Locale.CANADA);
+            return dayOfWeekName + " | Read " + pagesRead + " pages";
         }
     }
 }

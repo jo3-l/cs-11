@@ -17,16 +17,12 @@ public class Rating {
         this.rating = rating;
     }
 
-    // Requires: Nothing.
-    // Modifies: Nothing.
-    // Effects: Returns the time at which this rating was made.
+    // Getters
+
     public Instant getTime() {
         return time;
     }
 
-    // Requires: Nothing.
-    // Modifies: Nothing.
-    // Effects: Returns the rating.
     public int getRating() {
         return rating;
     }

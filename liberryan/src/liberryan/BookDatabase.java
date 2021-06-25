@@ -13,7 +13,7 @@ public class BookDatabase {
     private final List<Book> currentlyReading = new ArrayList<>();
     private final List<Book> alreadyRead = new ArrayList<>();
 
-    // Requires: String filepath.
+    // Requires: String filepath - file path to save to.
     // Modifies: Nothing.
     // Effects: Attempts to save the state of the book database to disk at the filepath provided.
     // The current value of the file will be overwritten.
@@ -32,7 +32,7 @@ public class BookDatabase {
         }
     }
 
-    // Requires: BookFolder folder.
+    // Requires: BookFolder folder - folder to get.
     // Modifies: Nothing.
     // Effects: Gets the list of books in the folder provided.
     public List<Book> getBooksInFolder(BookFolder folder) {
@@ -44,7 +44,7 @@ public class BookDatabase {
             case ALREADY_READ:
                 return alreadyRead;
             default:
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Invalid book folder type; this should never happen.");
         }
     }
 
@@ -59,30 +59,30 @@ public class BookDatabase {
         return books;
     }
 
-    // Requires: BookFolder folder, Book book.
-    // Modifies: this, wantToRead, currentlyReading, alreadyRead.
+    // Requires: BookFolder folder - folder to remove from, Book book - book to remove.
+    // Modifies: wantToRead, currentlyReading, alreadyRead.
     // Effects: Removes the book from the folder provided. If the book is not a member of the list, this function does
     // nothing.
     public void removeBookFromList(BookFolder folder, Book book) {
         getBooksInFolder(folder).remove(book);
     }
 
-    // Requires: BookFolder folder, Book book.
-    // Modifies: this, wantToRead, currentlyReading, alreadyRead.
+    // Requires: BookFolder folder - folder to add book to, Book book - book to add.
+    // Modifies: wantToRead, currentlyReading, alreadyRead.
     // Effects: Adds the book to the folder provided.
     public void addBookToList(BookFolder folder, Book book) {
         getBooksInFolder(folder).add(book);
     }
 
-    // Requires: BookFolder from, BookFolder to, Book book.
-    // Modifies: this, wantToRead, currentlyReading, alreadyRead.
+    // Requires: BookFolder from - source folder, BookFolder to - destination folder, Book book - target book.
+    // Modifies: wantToRead, currentlyReading, alreadyRead.
     // Effects: Moves the book from the folder 'from' to the folder 'to'.
     public void moveBookToFolder(BookFolder from, BookFolder to, Book book) {
         removeBookFromList(from, book);
         addBookToList(to, book);
     }
 
-    // Requires: String filepath.
+    // Requires: String filepath - filepath to read from.
     // Modifies: Nothing.
     // Effects: Creates a book database instance from the data at the filepath provided.
     // On failure, an IOException is thrown.

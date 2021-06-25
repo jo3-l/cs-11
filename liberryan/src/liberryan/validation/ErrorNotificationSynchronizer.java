@@ -11,15 +11,16 @@ public class ErrorNotificationSynchronizer<F extends Enum<F>> {
     // Connects fields validation is applied to to text fields where errors should be displayed.
     private final List<ErrorNotificationMapping<F>> connections = new ArrayList<>();
 
-    // Requires: F field, TextField display.
-    // Modifies: this, fields.
+    // Requires: F field - field to connect, Text display - text field where errors corresponding to this field should
+    // be displayed in the GUI.
+    // Modifies: fields.
     // Effects: Connects the given field to a text field where errors corresponding to that field should be displayed.
     public ErrorNotificationSynchronizer<F> connectField(F field, Text display) {
         connections.add(new ErrorNotificationMapping<>(field, display));
         return this;
     }
 
-    // Requires: ValidationErrorList<F> errors.
+    // Requires: ValidationErrorList<F> errors - list of errors.
     // Modifies: The text fields connected to the synchronizer internally (they can change, so not possible to list them
     // out one by one)
     // Effects: Syncs the state of the errors in the GUI with the validation errors provided. More specifically, errors
@@ -55,16 +56,12 @@ public class ErrorNotificationSynchronizer<F extends Enum<F>> {
             this.textField = textField;
         }
 
-        // Requires: Nothing.
-        // Modifies: Nothing.
-        // Effects: Returns the field which this mapping is for.
+        // Getters
+
         public F getField() {
             return field;
         }
 
-        // Requires: Nothing.
-        // Modifies: Nothing.
-        // Effects: Returns the text field where errors should be displayed.
         public Text getTextField() {
             return textField;
         }

@@ -347,7 +347,7 @@
                            </font>
                         </Text>
                         <ListView fx:id="recommendedBooksListView" layoutX="540.0" layoutY="62.0" prefHeight="382.0" prefWidth="251.0" />
-                        <Text layoutX="554.0" layoutY="457.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book recommendations are generated from your &quot;want to read&quot; section and your genre/author preferences." wrappingWidth="243.517578125" />
+                        <Text layoutX="544.0" layoutY="462.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book recommendations are generated from your &quot;want to read&quot; section and your genre/author preferences." wrappingWidth="243.517578125" />
                      </children></AnchorPane>
                </content>
             </Tab>
@@ -355,16 +355,16 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Text layoutX="148.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Save your books to a file / Restore from file">
+                        <Text layoutX="92.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Save your books to a file | Restore from file">
                            <font>
                               <Font size="25.0" />
                            </font>
                         </Text>
                         <TextField fx:id="fileNameTextField" layoutX="205.0" layoutY="161.0" />
-                        <Label layoutX="204.0" layoutY="129.0" text="File name:" />
+                        <Label layoutX="205.0" layoutY="137.0" text="File name:" />
                         <Button layoutX="205.0" layoutY="206.0" mnemonicParsing="false" onMouseClicked="#saveToFile" text="Save to file" />
                         <Button layoutX="302.0" layoutY="206.0" mnemonicParsing="false" onMouseClicked="#loadFromFile" text="Load from file" />
-                        <Text fx:id="saveRestoreStatusText" layoutX="115.0" layoutY="323.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status: Waiting for you to do something...">
+                        <Text fx:id="saveRestoreStatusText" layoutX="210.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status: Waiting for you to do something...">
                            <font>
                               <Font size="15.0" />
                            </font>

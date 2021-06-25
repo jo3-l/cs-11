@@ -10,13 +10,11 @@ import java.util.List;
 
 // Implementation of a decoder/encoder for books.
 public class BookSerializer {
-    public static final char NO_BOOKS = 0x00F;
-    // The character used to separate individual fields of books.
-    public static final char FIELD_SEPARATOR = 0xBEEF;
-    // The character used to separate encoded books when encoding many books at once.
-    public static final char SEPARATOR = 0xF00D;
+    private static final String NO_BOOKS = Character.toString((char) 0x00F);
+    private static final char FIELD_SEPARATOR = 0xBEEF;
+    private static final char SEPARATOR = 0xF00D;
 
-    // Requires: List<Book> books.
+    // Requires: List<Book> books - books to encode.
     // Modifies: Nothing.
     // Effects: Encodes all books into a single string. It may be decoded back into its original form via
     // BookSerializer.decodeMany().
@@ -29,16 +27,16 @@ public class BookSerializer {
         for (Book book : books) {
             buf.append(encode(book)).append(SEPARATOR);
         }
-        if (buf.length() == 0) return Character.toString(NO_BOOKS);
+        if (buf.length() == 0) return NO_BOOKS;
         return buf.toString();
     }
 
-    // Requires: String raw.
+    // Requires: String raw - string to decode.
     // Modifies: Nothing.
     // Effects: Decodes the string back into a list of book objects.
     public static List<Book> decodeMany(String raw) {
         List<Book> books = new ArrayList<>();
-        if (raw.equals(Character.toString(NO_BOOKS))) return books;
+        if (raw.equals(NO_BOOKS)) return books;
 
         StringBuilder buf = new StringBuilder();
         for (int i = 0; i < raw.length(); i++) {
@@ -56,7 +54,7 @@ public class BookSerializer {
         return books;
     }
 
-    // Requires: Book book.
+    // Requires: Book book - book to encode.
     // Modifies: Nothing.
     // Effects: Encodes the book as a string. It may be decoded back into its original form via BookSerializer.encode().
     //
@@ -89,14 +87,14 @@ public class BookSerializer {
         return buf.toString();
     }
 
-    // Requires: String raw.
+    // Requires: String raw - string to decode.
     // Modifies: Nothing.
     // Effects: Decodes the string into a book object.
     public static Book decode(String raw) {
         StringBuilder buf = new StringBuilder();
         BookBuilder builder = new BookBuilder();
 
-        Book.Field currentField = Book.Field.PROGRESS_UPDATES;
+        Book.Field currentField = Book.Field.CURRENT_PAGE;
         for (int i = 0; i < raw.length(); i++) {
             char c = raw.charAt(i);
             // If the current character is the field separator, then set the current field's value.
@@ -104,7 +102,7 @@ public class BookSerializer {
                 // Set the corresponding field.
                 String val = buf.toString();
                 switch (currentField) {
-                    case PROGRESS_UPDATES:
+                    case CURRENT_PAGE:
                         builder.setProgressUpdates(ProgressUpdateSerializer.decodeMany(val));
                         currentField = Book.Field.GENRE;
                         break;

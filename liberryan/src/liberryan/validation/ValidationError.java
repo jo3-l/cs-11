@@ -11,16 +11,12 @@ public class ValidationError<F extends Enum<F>> {
         this.message = message;
     }
 
-    // Requires: Nothing.
-    // Modifies: Nothing.
-    // Effects: Returns the validation error message.
+    // Getters
+
     public String getMessage() {
         return message;
     }
 
-    // Requires: Nothing.
-    // Modifies: Nothing.
-    // Effects: Returns the field which caused this validation error.
     public F getField() {
         return field;
     }

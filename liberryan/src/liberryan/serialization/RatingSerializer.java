@@ -6,10 +6,9 @@ import java.time.Instant;
 
 // Implementation of a decoder/encoder for ratings.
 public class RatingSerializer {
-    // The character used to separate individual fields of ratings.
-    public static final char FIELD_SEPARATOR = 0xFACE;
+    private static final char FIELD_SEPARATOR = 0xFACE;
 
-    // Requires: Rating rating.
+    // Requires: Rating rating - rating to encode.
     // Modifies: Nothing.
     // Effects: Encodes the rating into a string. It may then be decoded back into its original form using
     // RatingSerializer.decode().
@@ -23,7 +22,7 @@ public class RatingSerializer {
                 + FIELD_SEPARATOR;
     }
 
-    // Requires: String raw.
+    // Requires: String raw - string to decode.
     // Modifies: Nothing.
     // Effects: Decodes the string into a rating object.
     public static Rating decode(String raw) {

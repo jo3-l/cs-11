@@ -8,12 +8,10 @@ import java.util.List;
 
 // Implementation of an encoder/decoder for progress updates.
 public class ProgressUpdateSerializer {
-    // The character used to separate individual fields of progress updates.
-    public static final char FIELD_SEPARATOR = 0xBAAA;
-    // The character used to separate encoded progress updates when encoding many progress updates at once.
-    public static final char SEPARATOR = 0xCAFE;
+    private static final char FIELD_SEPARATOR = 0xBAAA;
+    private static final char SEPARATOR = 0xCAFE;
 
-    // Requires: List<ProgressUpdate> updates.
+    // Requires: List<ProgressUpdate> updates - list of progress updates to encode.
     // Modifies: Nothing.
     // Effects: Encodes all progress updates into a single string. It may then be decoded back into its original
     // form via ProgressUpdateSerializer.decodeMany().
@@ -28,7 +26,7 @@ public class ProgressUpdateSerializer {
         return buf.toString();
     }
 
-    // Requires: String raw.
+    // Requires: String raw - string to decode.
     // Modifies: Nothing.
     // Effects: Decodes the string back into a list of progress update objects.
     public static List<ProgressUpdate> decodeMany(String raw) {
@@ -50,7 +48,7 @@ public class ProgressUpdateSerializer {
         return updates;
     }
 
-    // Requires: ProgressUpdate update.
+    // Requires: ProgressUpdate update - update to encode.
     // Modifies: Nothing.
     // Effects: Encodes the progress update into a string. It may then be decoded back into its original
     // form via ProgressUpdateSerializer.decode().
@@ -64,7 +62,7 @@ public class ProgressUpdateSerializer {
                 + FIELD_SEPARATOR;
     }
 
-    // Requires: String raw.
+    // Requires: String raw - string ot decode.
     // Modifies: Nothing.
     // Effects: Decodes the string back into a progress update object.
     public static ProgressUpdate decode(String raw) {

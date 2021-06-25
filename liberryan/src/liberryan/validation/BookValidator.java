@@ -4,14 +4,13 @@ import liberryan.Book;
 import liberryan.Genre;
 import liberryan.Time;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 // Validator for books.
 public class BookValidator {
-    // Requires: Book book, ValidationErrorList<Book.Field> errors.
+    // Requires: Book book - book to validate, ValidationErrorList<Book.Field> errors - error list to use.
     // Modifies: errors.
     // Effects: Validates the book, adding any relevant errors to the errors list provided.
     // See the documentation comment on the longer overload for validate() for a discussion of what validations are applied.
@@ -19,7 +18,8 @@ public class BookValidator {
         validate(book, errors, new ArrayList<>());
     }
 
-    // Requires: Book book, ValidationErrorList<Book.Field> errors, List<Book.Field> skip.
+    // Requires: Book book - book to validate, ValidationErrorList<Book.Field> errors - error list to use,
+    // List<Book.Field> skip - list of fields to skip validation for.
     // Modifies: errors.
     // Effects: Validates the book, adding any relevant errors to the errors list provided. Validations for fields
     // which are members of the list skip are skipped.
@@ -38,7 +38,7 @@ public class BookValidator {
         if (!skip.contains(Book.Field.PUBLISHED_DATE)) validatePublishedDate(book.getPublishedDate(), errors);
     }
 
-    // Requires: String name, ValidationErrorList<Book.Field> errors.
+    // Requires: String name - input name to validate, ValidationErrorList<Book.Field> errors - error list to use.
     // Modifies: errors.
     // Effects: Validates that the name is not empty, adding any error to the errors list provided if it was invalid.
     // Returns whether the name was valid.
@@ -48,7 +48,7 @@ public class BookValidator {
         return false;
     }
 
-    // Requires: Genre genre, ValidationErrorList<Book.Field> errors.
+    // Requires: Genre genre - input genre to validate, ValidationErrorList<Book.Field> errors - error list to use.
     // Modifies: errors.
     // Effects: Validates that the genre is non-null, adding any error to the errors list provided if it was invalid.
     // Returns whether the genre was valid.
@@ -58,7 +58,7 @@ public class BookValidator {
         return false;
     }
 
-    // Requires: String author, ValidationErrorList<Book.Field> errors.
+    // Requires: String author - input author name to use, ValidationErrorList<Book.Field> errors - error list to use.
     // Modifies: errors.
     // Effects: Validates that the author name is not empty, adding any error to the errors list provided if it was invalid.
     // Returns whether the author name was valid.
@@ -68,7 +68,7 @@ public class BookValidator {
         return false;
     }
 
-    // Requires: int pageCount, ValidationErrorList<Book.Field> errors.
+    // Requires: int pageCount - input page count to validate, ValidationErrorList<Book.Field> errors - error list to use.
     // Modifies: errors.
     // Effects: Validates that pageCount is positive, adding any error to the errors list provided if it was invalid.
     // Returns whether the author name was valid.
@@ -78,7 +78,7 @@ public class BookValidator {
         return false;
     }
 
-    // Requires: LocalDate publishedDate, ValidationErrorList<Book.Field> errors.
+    // Requires: LocalDate publishedDate - input published date to validate, ValidationErrorList<Book.Field> errors - error list to use.
     // Modifies: errors.
     // Effects: validates that publishedDate is either null or isn't after the current time, adding any error to the errors
     // list provided if it was invalid. Returns whether the published date was valid.

@@ -17,16 +17,12 @@ public class ProgressUpdate {
         this.pagesRead = pagesRead;
     }
 
-    // Requires: Nothing.
-    // Modifies: Nothing.
-    // Effects: Returns the time at which this progress update was created.
+    // Getters
+
     public Instant getTime() {
         return time;
     }
 
-    // Requires: Nothing.
-    // Modifies: Nothing.
-    // Effects: Returns the number of pages read.
     public int getPagesRead() {
         return pagesRead;
     }

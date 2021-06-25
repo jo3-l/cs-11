@@ -117,7 +117,7 @@ public class StatisticsEngine {
 
         @Override
         public String toString() {
-            return name + " - average rating " + decimalFormat.format(getAverageRating());
+            return name + " | Average rating of " + decimalFormat.format(getAverageRating());
         }
     }
 
@@ -140,7 +140,7 @@ public class StatisticsEngine {
 
         @Override
         public String toString() {
-            return genre.toString() + " - average rating " + decimalFormat.format(getAverageRating());
+            return genre.getName() + " | Average rating of " + decimalFormat.format(getAverageRating());
         }
     }
 
@@ -149,30 +149,24 @@ public class StatisticsEngine {
         protected int totalRating;
         protected int ratedBookCount;
 
-        // Requires: int n.
-        // Modifies: this, totalRating.
+        // Requires: int n - amount to increment total rating by.
+        // Modifies: totalRating.
         // Effects: Increments the total ratings books of this genre have gotten by N.
         public void incrementTotalRatingBy(int n) {
             totalRating += n;
         }
 
-        // Requires: Nothing.
-        // Modifies: Nothing.
-        // Effects: Returns the total rating books of this genre have gotten.
         public int getTotalRating() {
             return totalRating;
         }
 
         // Requires: Nothing.
-        // Modifies: this, ratedBookCount.
+        // Modifies: ratedBookCount.
         // Effects: Increments the total number of books of this genre that have been rated by 1.
         public void incrementRatedBookCount() {
             ratedBookCount++;
         }
 
-        // Requires: Nothing.
-        // Modifies: Nothing.
-        // Effects: Returns the total number of books of this genre that have been rated.
         public int getRatedBookCount() {
             return ratedBookCount;
         }
