@@ -1,14 +1,13 @@
 package liberryan;
 
-import java.time.DayOfWeek;
-import java.time.Instant;
-import java.time.temporal.ChronoField;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
 // The statistics engine, responsible for keeping track of the most popular authors and genres and
 // generating recommendations.
 public class StatisticsEngine {
+    private static final DecimalFormat decimalFormat = new DecimalFormat("#.#");
     private final BookDatabase database;
 
     public StatisticsEngine(BookDatabase database) {
@@ -115,6 +114,11 @@ public class StatisticsEngine {
         public String getName() {
             return name;
         }
+
+        @Override
+        public String toString() {
+            return name + " - average rating " + decimalFormat.format(getAverageRating());
+        }
     }
 
     // Data regarding a genre.
@@ -132,6 +136,11 @@ public class StatisticsEngine {
         // Effects: Returns the genre this information is for.
         public Genre getGenre() {
             return genre;
+        }
+
+        @Override
+        public String toString() {
+            return genre.toString() + " - average rating " + decimalFormat.format(getAverageRating());
         }
     }
 
@@ -172,6 +181,7 @@ public class StatisticsEngine {
         // Modifies: Nothing.
         // Effects: Returns the average rating books of this genre have gotten.
         public double getAverageRating() {
+            if (ratedBookCount == 0) return 0;
             return (double) totalRating / ratedBookCount;
         }
     }

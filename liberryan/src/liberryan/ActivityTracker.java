@@ -2,13 +2,22 @@ package liberryan;
 
 import java.time.DayOfWeek;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.time.format.TextStyle;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 // Tracks user reading activity.
 public class ActivityTracker {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+            .withLocale(Locale.CANADA)
+            .withZone(ZoneId.systemDefault());
+
     private final BookDatabase database;
 
     public ActivityTracker(BookDatabase database) {
@@ -23,12 +32,14 @@ public class ActivityTracker {
         List<ActivityLogEntry> entries = new ArrayList<>();
         for (Book book : database.getAllBooks()) {
             if (book.getRating() != null) {
-                String message = "Rated the book '" + book.getName() + "' " + book.getRating().getRating() + " stars.";
+                String message = "Rated the book '" + book.getName() + "' " + book.getRating().getRating()
+                        + " stars (" + formatter.format(book.getRating().getTime()) + ")";
                 entries.add(new ActivityLogEntry(message, book.getRating().getTime()));
             }
 
             for (ProgressUpdate update : book.getProgressUpdates()) {
-                String message = "Read " + update.getPagesRead() + " pages of '" + book.getAuthor() + "'.";
+                String message = "Read " + update.getPagesRead() + " pages of '" + book.getAuthor()
+                        + "' (" + formatter.format(update.getTime()) + ")";
                 entries.add(new ActivityLogEntry(message, update.getTime()));
             }
         }
@@ -54,7 +65,7 @@ public class ActivityTracker {
                 if (update.getTime().isBefore(startTime) || update.getTime().isAfter(endTime)) continue;
                 // ChronoField.DAY_OF_WEEK returns the day of week as a 1-based integer.
                 // We want 0-based in order to index entries.
-                int offset = update.getTime().get(ChronoField.DAY_OF_WEEK) - 1;
+                int offset = update.getTime().atZone(ZoneId.systemDefault()).getDayOfWeek().getValue() - 1;
                 entries.get(offset).incrementPagesReadBy(update.getPagesRead());
             }
         }
@@ -84,6 +95,11 @@ public class ActivityTracker {
         // Effects: Returns the time that this entry was created at.
         public Instant getCreatedAt() {
             return createdAt;
+        }
+
+        @Override
+        public String toString() {
+            return message;
         }
     }
 
@@ -116,6 +132,11 @@ public class ActivityTracker {
         // Effects: Returns the number of pages read on this weekday.
         public int getPagesRead() {
             return pagesRead;
+        }
+
+        @Override
+        public String toString() {
+            return getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.CANADA) + " - Read " + pagesRead + " pages";
         }
     }
 }

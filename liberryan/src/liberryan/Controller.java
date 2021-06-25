@@ -8,16 +8,22 @@ import liberryan.validation.BookValidator;
 import liberryan.validation.ErrorNotificationSynchronizer;
 import liberryan.validation.ValidationErrorList;
 
+import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.format.TextStyle;
+import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
-    private final ErrorNotificationSynchronizer<Book.Field> createBookErrorSynchronizer
-            = new ErrorNotificationSynchronizer<>();
-    private final ErrorNotificationSynchronizer<Book.Field> editBookErrorSynchronizer
-            = new ErrorNotificationSynchronizer<>();
+    private final ErrorNotificationSynchronizer<Book.Field> createBookErrorSynchronizer = new ErrorNotificationSynchronizer<>();
+    private final ErrorNotificationSynchronizer<Book.Field> editBookErrorSynchronizer = new ErrorNotificationSynchronizer<>();
     private BookDatabase database = new BookDatabase();
+    private ActivityTracker activityTracker = new ActivityTracker(database);
+    private StatisticsEngine statisticsEngine = new StatisticsEngine(database);
 
     public TabPane tabPane;
 
@@ -53,7 +59,9 @@ public class Controller implements Initializable {
 
     public TabPane bookFolderTab;
 
-    // edit book
+    // edit book / book information
+    public Text pagesReadInPastWeekText;
+
     public TextField editBookNameTextField;
     public TextField editBookPageCountTextField;
     public TextField editBookPagesReadSoFarTextField;
@@ -85,6 +93,22 @@ public class Controller implements Initializable {
 
     public AnchorPane bookInfoAnchorPane;
 
+    // recent activity
+    public Text weekdayWithMostActivityText;
+    public Text weekdayWithLeastActivityText;
+
+    public ListView<ActivityTracker.ReadingActivityEntry> readingActivityByWeekdayListView;
+    public ListView<ActivityTracker.ActivityLogEntry> activityLogListView;
+
+    // statistics
+    public ListView<StatisticsEngine.AuthorData> favoriteAuthorsListView;
+    public ListView<StatisticsEngine.GenreData> favoriteGenresListView;
+    public ListView<Book> recommendedBooksListView;
+
+    // save/restore
+    public TextField fileNameTextField;
+    public Text saveRestoreStatusText;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Add the appropriate values to dropdowns.
@@ -112,6 +136,12 @@ public class Controller implements Initializable {
             if (!oldTab.equals(newTab)) {
                 bookInfoAnchorPane.setVisible(false);
             }
+        });
+
+        // render recent activity/statistics when clicked.
+        tabPane.getSelectionModel().selectedItemProperty().addListener((tab, oldTab, newTab) -> {
+            if (newTab.equals(recentActivityTab)) renderRecentActivity();
+            else if (newTab.equals(statisticsTab)) renderStatistics();
         });
     }
 
@@ -246,8 +276,8 @@ public class Controller implements Initializable {
                 if (newPagesReadSoFar < book.getCurrentPage()) {
                     editBookPagesReadSoFarValidationFailureText.setText("Pages read so far mustn't be lower than current page");
                     editBookPagesReadSoFarValidationFailureText.setVisible(true);
-                } else if (newPagesReadSoFar > book.getCurrentPage()) {
-                    editBookPagesReadSoFarValidationFailureText.setText("Pages read so far mustn't be greater than current page");
+                } else if (newPagesReadSoFar > book.getPageCount()) {
+                    editBookPagesReadSoFarValidationFailureText.setText("Pages read so far mustn't be greater than page count");
                     editBookPagesReadSoFarValidationFailureText.setVisible(true);
                 } else {
                     editBookPagesReadSoFarValidationFailureText.setVisible(false);
@@ -306,12 +336,15 @@ public class Controller implements Initializable {
         // set new data
         book.setName(newName);
         book.setPageCount(newPageCount);
-        if (newPagesReadSoFar != -1 && newPagesReadSoFar != book.getCurrentPage())
+        if (newPagesReadSoFar != -1 && newPagesReadSoFar != book.getCurrentPage()) {
             book.setCurrentPage(newPagesReadSoFar);
+        }
         book.setGenre(newGenre);
         book.setAuthor(newAuthorName);
         book.setPublishedDate(newPublishedAt);
-        if (newRating != -1) book.setRating(newRating);
+
+        if (newRating != -1
+            && (book.getRating() == null || newRating != book.getRating().getRating())) book.setRating(newRating);
 
         // change folder if necessary
         if (newFolder != getSelectedFolder()) {
@@ -331,18 +364,117 @@ public class Controller implements Initializable {
     public void handleDeleteBook() {
         Book book = getSelectedBook();
         if (book == null) return;
+        BookFolder folder = getSelectedFolder();
 
-        database.removeBookFromList(getSelectedFolder(), book);
-        getListViewForFolder(getSelectedFolder()).getItems().remove(book);
+        database.removeBookFromList(folder, book);
+        getListViewForFolder(folder).getItems().remove(book);
         bookInfoAnchorPane.setVisible(false);
     }
 
+    public void renderRecentActivity() {
+        List<ActivityTracker.ActivityLogEntry> recentActivity = activityTracker.getRecentActivity();
+        activityLogListView.getItems().setAll(recentActivity);
+
+        Instant now = Time.currentInstant();
+        Instant oneWeekAgo = now.minus(Duration.ofDays(7));
+        List<ActivityTracker.ReadingActivityEntry> readingActivityEntries = activityTracker
+                .getReadingActivityByWeekdayBetween(oneWeekAgo, now);
+        readingActivityByWeekdayListView.getItems().setAll(readingActivityEntries);
+
+        ActivityTracker.ReadingActivityEntry readMostEntry = null;
+        ActivityTracker.ReadingActivityEntry readLeastEntry = null;
+        // simple linear scan to determine the weekdays on which the last/most was read.
+        for (ActivityTracker.ReadingActivityEntry entry : readingActivityEntries) {
+            int pagesRead = entry.getPagesRead();
+            if (readMostEntry == null || pagesRead > readMostEntry.getPagesRead()) readMostEntry = entry;
+            if (readLeastEntry == null || pagesRead < readLeastEntry.getPagesRead()) readLeastEntry = entry;
+        }
+
+        String dayOfWeek = readMostEntry.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.CANADA);
+        weekdayWithMostActivityText.setText("You read the most on " + dayOfWeek + " (" + readMostEntry.getPagesRead() + " page(s)).");
+        weekdayWithMostActivityText.setVisible(true);
+
+        // only show the weekday with least activity if it's not the same as the day with the most activity
+        if (readMostEntry != readLeastEntry) {
+            dayOfWeek = readLeastEntry.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.CANADA);
+            weekdayWithLeastActivityText.setText("You read the least on " + dayOfWeek + " (" + readLeastEntry.getPagesRead() + " page(s)).");
+            weekdayWithLeastActivityText.setVisible(true);
+        } else {
+            weekdayWithLeastActivityText.setVisible(false);
+        }
+    }
+
+    public void renderStatistics() {
+        List<StatisticsEngine.AuthorData> favoriteAuthors = statisticsEngine.getAuthorsSortedByPopularity();
+        favoriteAuthorsListView.getItems().setAll(favoriteAuthors);
+
+        List<StatisticsEngine.GenreData> favoriteGenres = statisticsEngine.getGenreDataSortedByPopularity();
+        favoriteGenresListView.getItems().setAll(favoriteGenres);
+
+        List<Book> recommendedBooks = statisticsEngine.getUnreadBooksSortedByRating();
+        recommendedBooksListView.getItems().setAll(recommendedBooks);
+    }
+
+    public void saveToFile() {
+        try {
+            database.save(fileNameTextField.getText());
+            saveRestoreStatusText.setText("Successfully saved!");
+            fileNameTextField.setText("");
+        } catch (IOException unused) {
+            saveRestoreStatusText.setText("Error while saving, are you sure you have the right file name?");
+        }
+    }
+
+    public void loadFromFile() {
+        try {
+            database = BookDatabase.fromFile(fileNameTextField.getText());
+            activityTracker = new ActivityTracker(database);
+            statisticsEngine = new StatisticsEngine(database);
+
+            wantToReadListView.getItems().setAll(database.getBooksInFolder(BookFolder.WANT_TO_READ));
+            currentlyReadingListView.getItems().setAll(database.getBooksInFolder(BookFolder.CURRENTLY_READING));
+            alreadyReadListView.getItems().setAll(database.getBooksInFolder(BookFolder.ALREADY_READ));
+
+            saveRestoreStatusText.setText("Successfully loaded books from file!");
+
+        } catch (IOException unused) {
+            saveRestoreStatusText.setText("Error while loading, are you sure you have the right file name?");
+        }
+    }
+
     private void refreshBookInfo() {
+        BookFolder folder = getSelectedFolder();
         Book book = getSelectedBook();
+
+        if (folder == BookFolder.CURRENTLY_READING) {
+            // NOTE: The +1 second here is to account for a quite inaccurate clock on Windows.
+            // Background: refreshBookInfo() is called when a book is edited. Sometimes, users will
+            // edit the page where they are currently at; so the message below should - in theory -
+            // change. However, this is not so. The system clock on Windows is only precise to ~10ms
+            // or so, meaning that 'now' would be the same time as when the progress update was added.
+            // Thus, one would observe that the count below was slightly inaccurate.
+            Instant now = Time.currentInstant().plus(Duration.ofSeconds(1));
+            Instant oneWeekAgo = now.minus(Duration.ofDays(7));
+            int pagesReadInPastWeek = book.getPagesReadBetween(oneWeekAgo, now);
+            pagesReadInPastWeekText.setText("In the past week, you read " + pagesReadInPastWeek + " page(s) of this book");
+            pagesReadInPastWeekText.setVisible(true);
+        } else {
+            // pages read in the past week only applies to books which the user is currently reading
+            pagesReadInPastWeekText.setVisible(false);
+        }
 
         editBookNameTextField.setText(book.getName());
         editBookPageCountTextField.setText(Integer.toString(book.getPageCount()));
-        editBookPagesReadSoFarTextField.setText(Integer.toString(book.getCurrentPage()));
+
+        if (folder == BookFolder.CURRENTLY_READING) {
+            editBookPagesReadSoFarTextField.setText(Integer.toString(book.getCurrentPage()));
+            editBookPagesReadSoFarTextField.setDisable(false);
+        } else {
+            // "pages read so far" is a field that users can only edit for books in the "currently reading"
+            // folder.
+            editBookPagesReadSoFarTextField.setDisable(true);
+        }
+
         editBookGenreComboBox.setValue(book.getGenre());
         editBookAuthorNameTextField.setText(book.getAuthor());
         editBookPublishedAtDatePicker.setValue(book.getPublishedDate());
@@ -380,7 +512,8 @@ public class Controller implements Initializable {
                 return currentlyReadingListView;
             case ALREADY_READ:
                 return alreadyReadListView;
+            default:
+                throw new IllegalArgumentException("Unknown book folder type.");
         }
-        throw new IllegalArgumentException("Unknown book folder type.");
     }
 }

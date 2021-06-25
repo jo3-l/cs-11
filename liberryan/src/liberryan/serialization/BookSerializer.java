@@ -10,6 +10,7 @@ import java.util.List;
 
 // Implementation of a decoder/encoder for books.
 public class BookSerializer {
+    public static final char NO_BOOKS = 0x00F;
     // The character used to separate individual fields of books.
     public static final char FIELD_SEPARATOR = 0xBEEF;
     // The character used to separate encoded books when encoding many books at once.
@@ -22,11 +23,13 @@ public class BookSerializer {
     //
     // The format is:
     //  (book + separator)*
+    // As a special case if books is empty, encodeMany returns NO_BOOKS.
     public static String encodeMany(List<Book> books) {
         StringBuilder buf = new StringBuilder();
         for (Book book : books) {
             buf.append(encode(book)).append(SEPARATOR);
         }
+        if (buf.length() == 0) return Character.toString(NO_BOOKS);
         return buf.toString();
     }
 
@@ -35,6 +38,8 @@ public class BookSerializer {
     // Effects: Decodes the string back into a list of book objects.
     public static List<Book> decodeMany(String raw) {
         List<Book> books = new ArrayList<>();
+        if (raw.equals(Character.toString(NO_BOOKS))) return books;
+
         StringBuilder buf = new StringBuilder();
         for (int i = 0; i < raw.length(); i++) {
             char c = raw.charAt(i);
