@@ -39,7 +39,7 @@ public class ActivityTracker {
 
             for (ProgressUpdate update : book.getProgressUpdates()) {
                 String formattedTime = formatter.format(update.getTime());
-                String message = "Read " + update.getPagesRead() + " pages of '" + book.getAuthor() + "' (" + formattedTime + ")";
+                String message = "Read " + update.getPagesRead() + " pages of '" + book.getName() + "' (" + formattedTime + ")";
                 entries.add(new ActivityLogEntry(message, update.getTime()));
             }
         }
