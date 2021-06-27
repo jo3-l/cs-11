@@ -22,7 +22,7 @@ public class StatisticsEngine {
         List<GenreData> genres = getGenreDataSortedByPopularity();
         List<AuthorData> authors = getAuthorsSortedByPopularity();
         return database.getBooksInFolder(BookFolder.WANT_TO_READ).stream()
-                .sorted(Comparator.comparingDouble(book -> {
+                .sorted(Comparator.comparingDouble((Book book) -> {
                     double genreAverageRating = genres.stream()
                             .filter(data -> data.getGenre() == book.getGenre())
                             .findFirst()
@@ -34,7 +34,7 @@ public class StatisticsEngine {
                             .map(AuthorData::getAverageRating)
                             .orElse(0d);
                     return authorAverageRating + genreAverageRating;
-                }))
+                }).reversed())
                 .collect(Collectors.toList());
     }
 
@@ -61,7 +61,7 @@ public class StatisticsEngine {
             genreInfo.incrementTotalRatingBy(book.getRating().getRating());
         }
 
-        genres.sort(Comparator.comparing(GenreData::getAverageRating).reversed());
+        genres.sort(Comparator.comparing(GenreData::getAverageRating).thenComparing(GenreData::getRatedBookCount).reversed());
         return genres;
     }
 
@@ -94,7 +94,7 @@ public class StatisticsEngine {
             data.incrementTotalRatingBy(book.getRating().getRating());
         }
 
-        authors.sort(Comparator.comparing(AuthorData::getAverageRating).reversed());
+        authors.sort(Comparator.comparing(AuthorData::getAverageRating).thenComparing(AuthorData::getRatedBookCount).reversed());
         return authors;
     }
 
