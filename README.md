@@ -18,4 +18,4 @@ Repository for my online Computer Science 11 course.
 - [x] [Friends Book](./friends-book)
 - [x] [Reading Text](./reading-text)
 - [x] [Persistent Friends Book](./persistent-friends-book)
-- [ ] [Final Project](./liberryan)
+- [x] [Final Project](./liberryan)
