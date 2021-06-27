@@ -172,29 +172,29 @@
                      <children>
                         <TabPane fx:id="bookFolderTab" layoutX="18.0" layoutY="60.0" prefHeight="432.0" prefWidth="771.0" tabClosingPolicy="UNAVAILABLE">
                           <tabs>
-                            <Tab text="Want to read">
+                            <Tab fx:id="wantToReadTab" text="Want to read">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="818.0">
                                        <children>
-                                          <ListView fx:id="wantToReadListView" layoutX="3.0" layoutY="2.0" onMouseClicked="#handleSelectFriend" prefHeight="404.0" prefWidth="170.0" />
+                                          <ListView fx:id="wantToReadListView" layoutX="3.0" layoutY="2.0" onMouseClicked="#handleSelectBook" prefHeight="404.0" prefWidth="170.0" />
                                        </children>
                                     </AnchorPane>
                               </content>
                             </Tab>
-                            <Tab text="Currently reading">
+                            <Tab fx:id="currentlyReadingTab" text="Currently reading">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <ListView fx:id="currentlyReadingListView" onMouseClicked="#handleSelectFriend" prefHeight="404.0" prefWidth="170.0" />
+                                          <ListView fx:id="currentlyReadingListView" onMouseClicked="#handleSelectBook" prefHeight="404.0" prefWidth="170.0" />
                                        </children>
                                     </AnchorPane>
                               </content>
                             </Tab>
-                              <Tab text="Already read">
+                              <Tab fx:id="alreadyReadTab" text="Already read">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
-                                          <ListView fx:id="alreadyReadListView" onMouseClicked="#handleSelectFriend" prefHeight="404.0" prefWidth="170.0" />
+                                          <ListView fx:id="alreadyReadListView" onMouseClicked="#handleSelectBook" prefHeight="404.0" prefWidth="170.0" />
                                        </children>
                                     </AnchorPane>
                                  </content>

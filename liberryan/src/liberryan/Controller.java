@@ -60,6 +60,9 @@ public class Controller implements Initializable {
     public Text createBookFolderValidationFailureText;
 
     public TabPane bookFolderTab;
+    public Tab wantToReadTab;
+    public Tab currentlyReadingTab;
+    public Tab alreadyReadTab;
 
     // edit book / book information
     public Text pagesReadInPastWeekText;
@@ -240,7 +243,7 @@ public class Controller implements Initializable {
     // Requires: Nothing.
     // Modifies: bookInfoAnchorPane.
     // Effects: Displays the book information for the currently selected book.
-    public void handleSelectFriend() {
+    public void handleSelectBook() {
         Book book = getSelectedBook();
         if (book == null) {
             // no selected book, so hide the book information.
@@ -510,10 +513,11 @@ public class Controller implements Initializable {
     // Modifies: Nothing.
     // Effects: Returns the currently selected folder.
     private BookFolder getSelectedFolder() {
-        if (wantToReadListView.getSelectionModel().getSelectedItem() != null) return BookFolder.WANT_TO_READ;
-        if (currentlyReadingListView.getSelectionModel().getSelectedItem() != null) return BookFolder.CURRENTLY_READING;
-        if (alreadyReadListView.getSelectionModel().getSelectedItem() != null) return BookFolder.ALREADY_READ;
-        return null;
+        Tab selectedTab = bookFolderTab.getSelectionModel().getSelectedItem();
+        if (selectedTab == null) return null;
+        if (selectedTab.equals(wantToReadTab)) return BookFolder.WANT_TO_READ;
+        if (selectedTab.equals(currentlyReadingTab)) return BookFolder.CURRENTLY_READING;
+        return BookFolder.ALREADY_READ;
     }
 
     // Requires: BookFolder folder - book folder to get the list view of.
