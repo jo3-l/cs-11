@@ -387,22 +387,25 @@ public class Controller implements Initializable {
         // perform a linear scan to determine the weekdays on which the last/most was read.
         for (ActivityTracker.ReadingActivityEntry entry : readingActivityEntries) {
             int pagesRead = entry.getPagesRead();
+            if (pagesRead == 0) continue; // skip days when no pages were read.
             if (readMostEntry == null || pagesRead > readMostEntry.getPagesRead()) readMostEntry = entry;
             if (readLeastEntry == null || pagesRead < readLeastEntry.getPagesRead()) readLeastEntry = entry;
         }
 
-        String dayOfWeekName = readMostEntry.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.CANADA);
-        weekdayWithMostActivityText.setText(
-                "You read the most on " + dayOfWeekName + " with " + readMostEntry.getPagesRead() + " page(s)."
-        );
-        weekdayWithMostActivityText.setVisible(true);
+        if (readMostEntry != null) {
+            String dayOfWeekName = readMostEntry.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.CANADA);
+            String message = "You read the most on " + dayOfWeekName + " with " + readMostEntry.getPagesRead() + " page(s).";
+            weekdayWithMostActivityText.setText(message);
+            weekdayWithMostActivityText.setVisible(true);
+        } else {
+            weekdayWithMostActivityText.setVisible(false);
+        }
 
-        // only show the weekday with least activity if it's not the same as the day with the most activity
+        // only show the weekday with least activity if it's not the same as the day with the most activity.
         if (readMostEntry != readLeastEntry) {
-            dayOfWeekName = readLeastEntry.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.CANADA);
-            weekdayWithLeastActivityText.setText(
-                    "You read the least on " + dayOfWeekName + " with " + readLeastEntry.getPagesRead() + " page(s)."
-            );
+            String dayOfWeekName = readLeastEntry.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.CANADA);
+            String message = "You read the least on " + dayOfWeekName + " with " + readLeastEntry.getPagesRead() + " page(s).";
+            weekdayWithLeastActivityText.setText(message);
             weekdayWithLeastActivityText.setVisible(true);
         } else {
             weekdayWithLeastActivityText.setVisible(false);
