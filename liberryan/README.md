@@ -1,5 +1,7 @@
 # Liberryan
 
+> 📚 Let the Liberryan handle the menial tasks for you, so you can focus on reading, not book-keeping.
+
 Liberryan is a JavaFX app that helps you track your reading activity.
 
 ## Installing

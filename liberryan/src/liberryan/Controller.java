@@ -288,9 +288,12 @@ public class Controller implements Initializable {
 
         int newPagesReadSoFar = book.getCurrentPage();
         String pagesReadSoFarRaw = editBookPagesReadSoFarTextField.getText();
+        // only validate pages read so far if it was provided
         if (!pagesReadSoFarRaw.isEmpty()) {
+            // try to parse the number
             try {
                 newPagesReadSoFar = Integer.parseInt(pagesReadSoFarRaw);
+                // validate the number
                 if (newPagesReadSoFar < book.getCurrentPage()) {
                     errors.add(Book.Field.CURRENT_PAGE, "Pages read so far must be greater than current page");
                 } else if (newPagesReadSoFar > book.getPageCount()) {
@@ -305,9 +308,12 @@ public class Controller implements Initializable {
                 ? -1
                 : book.getRating().getRating();
         String bookRatingRaw = editBookRatingTextField.getText();
+        // only validate rating if it was provided
         if (!bookRatingRaw.isEmpty()) {
+            // try to parse the number
             try {
                 newRating = Integer.parseInt(bookRatingRaw);
+                // validate the number
                 if (newRating < 0 || newRating > 5) {
                     errors.add(Book.Field.RATING, "Rating must be between zero and five");
                 }
@@ -316,10 +322,21 @@ public class Controller implements Initializable {
             }
         }
 
+        // make sure the user supplied a folder
+        BookFolder newFolder = editBookFolderComboBox.getValue();
+        boolean isFolderValid = newFolder != null;
+        if (!isFolderValid) {
+            editBookFolderValidationFailureText.setText("Book folder is required");
+            editBookFolderValidationFailureText.setVisible(true);
+        } else {
+            editBookFolderValidationFailureText.setVisible(false);
+        }
+
         // sync errors with those in the GUI.
         editBookErrorSynchronizer.sync(errors);
-        if (errors.hasErrors()) return; // return early if there were validation errors.
+        if (errors.hasErrors() || !isFolderValid) return; // return early if there were validation errors.
 
+        // update the book
         book.setName(newName);
         book.setGenre(newGenre);
         book.setAuthor(newAuthorName);
@@ -333,14 +350,6 @@ public class Controller implements Initializable {
                     || book.getRating().getRating() != newRating; // rating changed
             if (shouldSetRating) book.setRating(newRating);
         }
-
-        BookFolder newFolder = editBookFolderComboBox.getValue();
-        if (newFolder == null) {
-            editBookFolderValidationFailureText.setText("Book folder is required");
-            editBookFolderValidationFailureText.setVisible(true);
-            return;
-        }
-        editBookFolderValidationFailureText.setVisible(false);
 
         // move folder if needed
         if (newFolder != getSelectedFolder()) {
@@ -367,6 +376,7 @@ public class Controller implements Initializable {
 
         database.removeBookFromList(folder, book);
         getListViewForFolder(folder).getItems().remove(book);
+        // the selected book was removed, so the book information should no longer be visible
         bookInfoAnchorPane.setVisible(false);
     }
 
@@ -374,16 +384,20 @@ public class Controller implements Initializable {
     // Modifies: activityLogListView, readingActivityByWeekdayListView, weekdayWithMostActivityText, weekdayWithLeastActivityText
     // Effects: Renders the recent activity page with the newest information.
     public void renderRecentActivity() {
+        // render activity log
         List<ActivityTracker.ActivityLogEntry> recentActivity = activityTracker.getRecentActivity();
         activityLogListView.getItems().setAll(recentActivity);
 
+        // render weekday reading activity
         Instant now = Time.currentInstant();
         Instant oneWeekAgo = now.minus(Duration.ofDays(7));
         List<ActivityTracker.ReadingActivityEntry> readingActivityEntries = activityTracker.getReadingActivityByWeekdayBetween(oneWeekAgo, now);
         readingActivityByWeekdayListView.getItems().setAll(readingActivityEntries);
 
+        // render most popular/least popular weekdays for reading
         ActivityTracker.ReadingActivityEntry readMostEntry = null;
         ActivityTracker.ReadingActivityEntry readLeastEntry = null;
+
         // perform a linear scan to determine the weekdays on which the last/most was read.
         for (ActivityTracker.ReadingActivityEntry entry : readingActivityEntries) {
             int pagesRead = entry.getPagesRead();
@@ -416,12 +430,15 @@ public class Controller implements Initializable {
     // Modifies: favoriteAuthorsListView, favoriteGenresListView, recommendedBooksListView
     // Effects: Renders the statistics page with the newest information.
     public void renderStatistics() {
+        // render favorite authors
         List<StatisticsEngine.AuthorData> favoriteAuthors = statisticsEngine.getAuthorsSortedByPopularity();
         favoriteAuthorsListView.getItems().setAll(favoriteAuthors);
 
+        // render favorite genres
         List<StatisticsEngine.GenreData> favoriteGenres = statisticsEngine.getGenreDataSortedByPopularity();
         favoriteGenresListView.getItems().setAll(favoriteGenres);
 
+        // render recommended books
         List<Book> recommendedBooks = statisticsEngine.getUnreadBooksSortedByRating();
         recommendedBooksListView.getItems().setAll(recommendedBooks);
     }
